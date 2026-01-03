@@ -56,7 +56,7 @@ To get a local copy up and running, follow these simple steps.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/PannaglViktor/QuestMaster.git
+   git clone https://github.com/PannaglViktor/QuestMaker.git
 2. Open the project in Android Studio.
 
 3. Let Android Studio sync the project and download the required dependencies.
