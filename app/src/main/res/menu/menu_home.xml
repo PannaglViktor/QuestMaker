@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/headlineFragment"
+        android:title="@string/home"
+        android:icon="@drawable/home_menu_icon"
+        />
+
+    <item
+        android:id="@+id/myChoicesFragment"
+        android:title="@string/make_a_quest"
+        android:icon="@drawable/build_a_quest"
+
+        />
+
+    <item
+        android:id="@+id/searchArticlesFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_menu_icon"
+        />
+</menu>

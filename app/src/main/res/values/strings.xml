@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">QuestmakerBasics</string>
-    <string name="title_home">Find Quest</string>
-    <string name="title_dashboard">Create Quest</string>
-    <string name="title_notifications">User</string>
+    <string name="app_name">QuestMaster</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="make_a_quest">Make a Quest</string>
 </resources>

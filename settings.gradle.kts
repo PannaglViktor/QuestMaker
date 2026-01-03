@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "QuestmakerBasics"
+rootProject.name = "QuestMaster"
 include(":app")
  
