@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="2.5"
+        android:scaleY="2.5">
+
+        <!-- Mage Hat - Softer shape with a brim -->
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M54,32 C50,34 46,42 44,48 L64,48 C62,42 58,34 54,32Z" />
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M42,48 C42,49 66,49 66,48 L42,48Z"
+            android:strokeWidth="0.8"
+            android:strokeColor="#FF000000"/>
+
+        <!-- More Realistic Head Shape -->
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M54,58m-8,0a8,7 0,1 1,16 0a8,7 0,1 1,-16 0" />
+
+        <!-- Realistic Robe/Collar -->
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M44,64 C42,68 46,72 54,72 C62,72 66,68 64,64 C60,68 48,68 44,64Z" />
+
+        <!-- Subtle Magical Aura -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M38,42 L39,40 L40,42 L39,44Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M70,52m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0" />
+
+    </group>
+</vector>

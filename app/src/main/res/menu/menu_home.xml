@@ -3,21 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/headlineFragment"
+        android:id="@+id/homeFragment"
         android:title="@string/home"
         android:icon="@drawable/home_menu_icon"
         />
 
     <item
-        android:id="@+id/myChoicesFragment"
+        android:id="@+id/makeQuestFragment"
         android:title="@string/make_a_quest"
-        android:icon="@drawable/build_a_quest"
-
+        android:icon="@drawable/quest_icon"
         />
 
     <item
-        android:id="@+id/searchArticlesFragment"
+        android:id="@+id/profileFragment"
         android:title="@string/profile"
-        android:icon="@drawable/profile_menu_icon"
+        android:icon="@drawable/outline_boy_24"
         />
 </menu>
