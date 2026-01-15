@@ -123,25 +123,25 @@ public class SignupFragment extends Fragment {
                         String uid = firebaseUser.getUid();
                         User user = new User(uid, username, email);
                     .addOnCompleteListener(requireActivity(), task -> {
-                            if (task.isSuccessful()) {
-                                FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                                if (firebaseUser != null) {
-                                    String uid = firebaseUser.getUid();
-                                    User user = new User(uid, username, email);
-                                    db.collection("users").document(uid)
-                                            .set(user)
-                                            .addOnSuccessListener(aVoid -> {
-                                                //homepage
-                                            })
-                                            .addOnFailureListener(e -> {
-                                                //error on Firestore
-                                                Log.w("Register", "Error writing document", e);
-                                            });
-                                }
-                            } else {
-                                //fail signup, user message:
-                                Log.w("Register", "createUserWithEmail:failure", task.getException());
+                        if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            if (firebaseUser != null) {
+                                String uid = firebaseUser.getUid();
+                                User user = new User(uid, username, email);
+                                db.collection("users").document(uid)
+                                        .set(user)
+                                        .addOnSuccessListener(aVoid -> {
+                                            //homepage
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            //error on Firestore
+                                            Log.w("Register", "Error writing document", e);
+                                        });
                             }
+                        } else {
+                            //fail signup, user message:
+                            Log.w("Register", "createUserWithEmail:failure", task.getException());
+                        }
                         });
                     }
                 }
