@@ -1,4 +1,4 @@
-package com.example.questmaster;
+package com.uni_project.questmaster;
 
 import org.junit.Test;
 

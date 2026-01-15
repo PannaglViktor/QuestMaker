@@ -1,4 +1,4 @@
-package com.example.questmaster.ui;
+package com.uni_project.questmaster.ui.home;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.example.questmaster.R;
+import com.uni_project.questmaster.R;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
 public class SettingsActivity extends AppCompatActivity {

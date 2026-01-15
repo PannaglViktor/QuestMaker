@@ -1,4 +1,4 @@
-package com.example.questmaster.model;
+package com.uni_project.questmaster.model;
 
 
 import android.graphics.drawable.Drawable;

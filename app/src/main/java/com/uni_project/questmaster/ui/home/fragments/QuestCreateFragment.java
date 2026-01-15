@@ -1,4 +1,4 @@
-package com.example.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.home.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.questmaster.R;
+import com.uni_project.questmaster.R;
 
 /**
  * A simple {@link Fragment} subclass.

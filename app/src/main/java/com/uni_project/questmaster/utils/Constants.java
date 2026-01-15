@@ -1,15 +1,10 @@
-package com.example.questmaster.utils;
+package com.uni_project.questmaster.utils;
 
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.example.questmaster.R;
-import com.example.questmaster.model.Country;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.uni_project.questmaster.R;
 
 public class Constants {
 

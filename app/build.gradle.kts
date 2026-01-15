@@ -1,13 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.questmaster"
+    namespace = "com.uni_project.questmaster"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.questmaster"
+        applicationId = "com.uni_project.questmaster"
         minSdk = 29
         targetSdk = 36
         versionCode = 1
@@ -43,4 +44,11 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.commons.validator)
+
+
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
+
 }

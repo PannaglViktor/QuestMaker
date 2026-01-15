@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.questmaster.ui.start.fragments.LoginFragment"
+        android:name="com.uni_project.questmaster.ui.start.fragments.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/signupFragment"
-        android:name="com.example.questmaster.ui.start.fragments.SignupFragment"
+        android:name="com.uni_project.questmaster.ui.start.fragments.SignupFragment"
         android:label="SignupFragment" >
         <action
             android:id="@+id/action_signupFragment_to_homeActivity"
@@ -28,7 +28,7 @@
 
     <activity
         android:id="@+id/homeActivity"
-        android:name="com.example.questmaster.MainActivity"
+        android:name="com.uni_project.questmaster.MainActivity"
         android:label="activity_home"
         tools:layout="@layout/activity_home" />
 

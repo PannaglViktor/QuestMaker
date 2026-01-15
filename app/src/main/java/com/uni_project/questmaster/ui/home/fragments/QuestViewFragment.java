@@ -1,7 +1,6 @@
-package com.example.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.home.fragments;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +17,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.fragment.NavHostFragment; // Import for navigation
 
-import com.example.questmaster.R;
+import com.uni_project.questmaster.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView; // Import for ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.ArrayList;
 
 public class QuestViewFragment extends Fragment {
 

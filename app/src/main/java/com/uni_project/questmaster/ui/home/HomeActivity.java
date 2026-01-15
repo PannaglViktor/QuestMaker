@@ -1,4 +1,4 @@
-package com.example.questmaster;
+package com.uni_project.questmaster.ui.home;
 
 import android.os.Bundle;
 
@@ -7,9 +7,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.uni_project.questmaster.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
