@@ -20,11 +20,6 @@
         android:label="QuestViewFragment"
         tools:layout="@layout/fragment_quest_view"/>
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
-    <fragment
         android:id="@+id/questCreateFragment"
         android:name="com.uni_project.questmaster.ui.home.fragments.QuestCreateFragment"
         android:label="fragment_quest_create"
@@ -39,5 +34,19 @@
         android:name="com.uni_project.questmaster.ui.home.HomeActivity"
         android:label="HomeActivity"
         tools:layout="@layout/activity_home"/>
+    <fragment
+        android:id="@+id/personalProfileFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.PersonalProfileFragment"
+        android:label="fragment_personal_profile"
+        tools:layout="@layout/fragment_personal_profile" >
+        <action
+            android:id="@+id/action_personalProfileFragment_to_questSavedFragment"
+            app:destination="@id/questSavedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questSavedFragment"
+        android:name="com.uni_project.questmaster.ui.quest.saved.QuestSavedFragment"
+        android:label="fragment_quest_saved"
+        tools:layout="@layout/fragment_quest_saved" />
 
 </navigation>
