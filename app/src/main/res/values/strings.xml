@@ -53,5 +53,7 @@
     <string name="comment_notifications">Comment Notifications</string>
     <string name="about">About</string>
     <string name="app_info">App Info</string>
+    <string name="no_internet_connection">No internet connection available</string>
+    <string name="quest_image_map">quest image/map</string>
 
 </resources>

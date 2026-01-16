@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment {
                         // FirebaseUser user = mAuth.getCurrentUser();
                         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeActivity);
                     } else {
-                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed";
                         Snackbar.make(view, "Authentication failed: " + errorMessage, Snackbar.LENGTH_LONG).show();
                     }
                 });

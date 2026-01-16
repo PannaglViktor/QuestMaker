@@ -4,39 +4,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/l_background">
 
-    <!-- TOP TOOLBAR -->
+    <!-- TOP CIRCLE -->
+
+    <View
+        android:id="@+id/circle"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/light_green_rounded_background"
+        app:layout_constraintbottom_tobottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/d_palette"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/dark_background"
-
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/appTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="28sp"
-        android:textColor="@color/light_background"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <ImageView
-        android:id="@+id/menuIcon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/menu_icon"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="100dp"
+        android:background="@color/d_palette"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/menu_icon"/>
+        />
 
     <!-- PROFILE IMAGE -->
     <com.google.android.material.imageview.ShapeableImageView
@@ -45,41 +41,29 @@
         android:layout_height="200dp"
         android:src="@drawable/ic_launcher_foreground"
         app:shapeAppearanceOverlay="@style/CircleImageView"
-        app:strokeColor="@color/light_background"
-        app:strokeWidth="5dp"
+        app:strokeColor="@color/l_palette"
+        app:strokeWidth="4dp"
         app:layout_constraintTop_toBottomOf="@id/headerBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <!-- BOTTOM NAVIGATION  -->
-    <View
-        android:id="@+id/bottomBackground"
-        android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:background="@color/dark_background"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <ImageView
-        android:id="@+id/centerIcon"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:contentDescription="@string/create_quest"
-        android:src="@drawable/quest_icon"
-        app:layout_constraintBottom_toTopOf="@id/bottomBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- CENTER MENU -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_background"
+        android:background="@drawable/rounded_rectangle"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="24dp"
-        app:layout_constraintTop_toBottomOf="@id/profileImage"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/circle"
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <TextView
             android:id="@+id/profileName"
@@ -106,17 +90,21 @@
             android:text="@string/user_description"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/followButton"
-            android:layout_width="140dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/dark_background"
-            android:text="@string/follow"
-            android:textColor="@color/light_background" />
-
+            android:textSize="16sp"
+            android:gravity="center"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin"
+        android:text="@string/follow"
+        android:backgroundTint="@color/d_palette"
+        android:id="@+id/followButton"
+        android:textColor="@color/l_palette"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

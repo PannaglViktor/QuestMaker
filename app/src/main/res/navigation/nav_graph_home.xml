@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph_home">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/FeedFragment"
+    android:id="@+id/nav_graph_home">
+
+    <fragment
+        android:id="@+id/FeedFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.FeedFragment"
+        android:label="FeedFragment"
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_FeedFragment_to_questViewFragment"
+            app:destination="@id/questViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questViewFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.QuestViewFragment"
+        android:label="QuestViewFragment"
+        tools:layout="@layout/fragment_quest_view"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/questCreateFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.QuestCreateFragment"
+        android:label="fragment_quest_create"
+        tools:layout="@layout/fragment_quest_create" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.uni_project.questmaster.ui.home.SettingsActivity"
+        android:label="settings"
+        tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.uni_project.questmaster.ui.home.HomeActivity"
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home"/>
 
 </navigation>

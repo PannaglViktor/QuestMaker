@@ -1,9 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base.Theme.QuestMaster" parent="Theme.Material3.DayNight.NoActionBar">
-       <item name="colorPrimary">@color/light_background</item>
+    <style name="Theme.QuestMaster" parent="Theme.Material3.DayNight.NoActionBar">
+       <item name="colorPrimary">@color/l_palette</item>
     </style>
-
-    <style name="Theme.QuestMaster" parent="Base.Theme.QuestMaster" />
 
 </resources>

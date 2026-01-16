@@ -115,36 +115,34 @@ public class SignupFragment extends Fragment {
 
     private void registerUser(String email, String password, String username, View view) {
         mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, task -> {
-                if (task.isSuccessful()) {
-                    //database
-                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                    if (firebaseUser != null) {
-                        String uid = firebaseUser.getUid();
-                        User user = new User(uid, username, email);
-                    .addOnCompleteListener(requireActivity(), task -> {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            if (firebaseUser != null) {
-                                String uid = firebaseUser.getUid();
-                                User user = new User(uid, username, email);
-                                db.collection("users").document(uid)
-                                        .set(user)
-                                        .addOnSuccessListener(aVoid -> {
-                                            //homepage
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            //error on Firestore
-                                            Log.w("Register", "Error writing document", e);
-                                        });
-                            }
-                        } else {
-                            //fail signup, user message:
-                            Log.w("Register", "createUserWithEmail:failure", task.getException());
+                .addOnCompleteListener(requireActivity(), task -> { // task for user creation
+                    if (task.isSuccessful()) {
+                        // save to Firestore
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            String uid = firebaseUser.getUid();
+                            User user = new User(uid, username, email);
+
+                            db.collection("users").document(uid)
+                                    .set(user)
+                                    .addOnSuccessListener(aVoid -> {
+                                        // user data to Firestore
+                                        Log.d("Register", "User profile is created for " + uid);
+                                        // Navigate to home after saving data
+                                        Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homeActivity);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Failed user data to Firestore
+                                        Log.w("Register", "Error writing document", e);
+                                        Snackbar.make(view, "Error saving user data.", Snackbar.LENGTH_LONG).show();
+                                    });
                         }
-                        });
+                    } else {
+                        // Error user creation
+                        Log.w("Register", "createUserWithEmail:failure", task.getException());
+                        Snackbar.make(view, "Authentication failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG).show();
                     }
-                }
-            });
+                });
     }
+
 }

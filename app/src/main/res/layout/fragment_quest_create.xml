@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/quest_background_light"
+    android:background="@color/l_background"
     tools:context=".ui.home.fragments.QuestCreateFragment">
 
     <!-- Header -->
@@ -15,7 +15,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="@string/app_name"
-        android:textColor="@color/quest_text_dark_green"
+        android:textColor="@color/d_text"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="@id/text_view_header"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/text_view_header"
-        app:tint="@color/quest_text_dark_green"
+        app:tint="@color/d_text"
         android:contentDescription="@string/menu_icon" />
 
 
@@ -55,7 +55,7 @@
                 android:id="@+id/quest_container"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/light_background"
+                android:background="@color/l_palette"
                 android:orientation="vertical"
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,12 +116,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="8dp"
-                    android:background="@color/dark_background"
+                    android:background="@color/d_palette"
                     android:padding="12dp">
 
                     <TextView
                         android:text="Starting Point"
-                        android:textColor="@color/quest_text_light_green"
+                        android:textColor="@color/l_text"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     <TextView
                         android:layout_marginTop="8dp"
                         android:text="End Point"
-                        android:textColor="@color/quest_text_light_green"
+                        android:textColor="@color/l_text"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -145,8 +145,8 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="20dp"
                     android:text="@string/save"
-                    android:backgroundTint="@color/quest_text_light_green"
-                    android:textColor="@color/quest_text_dark_green"
+                    android:backgroundTint="@color/l_text"
+                    android:textColor="@color/d_text"
                     app:cornerRadius="18dp" />
 
             </LinearLayout>

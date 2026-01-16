@@ -54,10 +54,6 @@
         <item name="app:tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <style name="Base.Theme.QuestMaster" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/dark_background</item>
-    </style>
-
 
 </resources>
 

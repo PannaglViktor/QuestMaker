@@ -2,16 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="light_background">#a3b18a</color>
-    <color name="dark_background">#3a5a40</color>
-    <color name="default_background">#dad7cd</color>
 
-    <color name="quest_background_light">#E6E8E1</color>
-    <color name="quest_container_green_light">#A5AD9C</color>
-    <color name="quest_container_green_dark">#58654F</color>
-    <color name="quest_text_light_green">#C9D3C0</color>
-    <color name="quest_text_dark_green">#434F3C</color>
-    <color name="quest_button_green">#97A58F</color>
+    <color name="l_palette">#a3b18a</color>
+    <color name="ml_palette">#A5AD9C</color>
+    <color name="m_palette">#97A58F</color>
+    <color name="md_palette">#58654F</color>
+    <color name="d_palette">#3a5a40</color>
 
+    <color name="l_background">#E6E8E1</color>
+    <color name="m_background">#dad7cd</color>
+
+    <color name="l_text">#C9D3C0</color>
+    <color name="d_text">#434F3C</color>
 
 </resources>
