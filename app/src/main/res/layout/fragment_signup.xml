@@ -1,53 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.start.fragments.SignupFragment">
+    tools:context=".ui.start.fragments.SignupFragment"
+    android:orientation="vertical"
+    android:background="@color/l_background"
+    >
 
-    <!-- TOP TOOLBAR -->
-    <View
-        android:id="@+id/headerBackground"
+
+    <!-- SIGNUP IMAGE -->
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/l_palette"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/appTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/app_sign_up"
-        android:textColor="@color/d_palette"
-        android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        android:layout_height="280dp"
+        android:contentDescription="@string/login_image"
+        app:srcCompat="@drawable/login_image"
+        />
     <!-- SIGNUP FORM -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
+        android:padding="10dp"
         android:gravity="center_horizontal"
         android:background="@color/m_background"
-        app:layout_constraintTop_toBottomOf="@id/headerBackground"
         android:layout_marginStart="@dimen/margin"
         android:layout_marginEnd="@dimen/margin"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <Button
+            style="@style/Widget.Material3.Button.TextButton"
+            android:id="@+id/alreadyLogin"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:contentDescription="@string/login_image"
-            app:srcCompat="@drawable/login_image" />
+            android:layout_height="wrap_content"
+            android:text="@string/do_you_already_have_an_account"
+            android:gravity="center|start"
+        />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -61,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
                 android:inputType="text"
-                android:textSize="24sp"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textSize="24sp"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textSize="24sp"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -112,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password"
                 android:inputType="textPassword"
-                android:textSize="24sp"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -120,11 +109,63 @@
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="140dp"
             android:layout_height="48dp"
+            android:textSize="16sp"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/d_palette"
             android:text="@string/signup"
-            android:textColor="@color/m_background" />
+            android:textColor="@color/m_background"
+            android:layout_gravity="center_horizontal"/>
+
+        <!-- GOOGLE SIGNUP-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="@dimen/margin"
+                android:layout_toStartOf="@id/text_or"
+                android:background="#555" />
+
+            <TextView
+                android:id="@+id/text_or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/or"
+                android:textSize="18sp"/>
+
+            <View
+                android:layout_width="100dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/margin"
+                android:layout_toEndOf="@id/text_or"
+                android:background="#555" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/google_signup_button"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="@dimen/margin"
+            android:layout_marginEnd="50dp"
+            android:text="@string/login_with_google"
+            app:icon="@drawable/icon_google"
+            app:iconGravity="textStart"
+            app:iconTint="@null"
+            android:backgroundTint="@color/d_palette"
+            android:textColor="@color/l_palette"
+            android:textSize="16sp"
+            />
 
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -12,7 +12,12 @@
           "package_name": "com.uni_project.questmaster"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "401143054516-pbp1ftb7m4o0l05lvf26gdt58cj7h1le.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBTIzoTra-NIKbASr-x-2hisv_uF9Yevco"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "401143054516-pbp1ftb7m4o0l05lvf26gdt58cj7h1le.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

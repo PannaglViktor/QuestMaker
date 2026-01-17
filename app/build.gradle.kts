@@ -43,12 +43,14 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.webkit)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.commons.validator)
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
 
 
     implementation(platform(libs.firebase.bom))

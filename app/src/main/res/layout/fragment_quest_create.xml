@@ -5,45 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/l_background"
+    android:id="@+id/makeQuestFragment"
     tools:context=".ui.home.fragments.QuestCreateFragment">
 
-    <!-- Header -->
-    <TextView
-        android:id="@+id/text_view_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/app_name"
-        android:textColor="@color/d_text"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Menu Icon -->
-    <ImageView
-        android:id="@+id/image_view_menu"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/quest_icon"
-        app:layout_constraintBottom_toBottomOf="@id/text_view_header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/text_view_header"
-        app:tint="@color/d_text"
-        android:contentDescription="@string/menu_icon" />
-
+    <!-- Header and Menu Icon have been removed -->
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="100dp"
+        android:paddingBottom="16dp"
         android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_header">
+        app:layout_constraintTop_toTopOf="parent">  <!-- Changed to parent top -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -60,7 +35,8 @@
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"> <!-- Added margin top for spacing -->
 
                 <!--  Name -->
                 <com.google.android.material.textfield.TextInputEditText
@@ -119,21 +95,23 @@
                     android:background="@color/d_palette"
                     android:padding="12dp">
 
-                    <TextView
-                        android:text="Starting Point"
-                        android:textColor="@color/l_text"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/startingPoint"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        />
-
-                    <TextView
-                        android:layout_marginTop="8dp"
-                        android:text="End Point"
                         android:textColor="@color/l_text"
                         android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:hint="Starting Point"
+                        android:inputType="textCapWords" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/endPoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/l_text"
+                        android:textSize="16sp"
+                        android:hint="Ending Point"
+                        android:inputType="textCapWords" />
                 </LinearLayout>
 
                 <!-- Save Button -->
@@ -154,9 +132,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

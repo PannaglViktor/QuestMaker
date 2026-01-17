@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/feedFragment"
         android:title="@string/home"
         android:icon="@drawable/home_menu_icon"
         />
@@ -15,13 +15,13 @@
         />
 
     <item
-        android:id="@+id/profileFragment"
+        android:id="@+id/personalProfileFragment"
         android:title="@string/profile"
         android:icon="@drawable/outline_boy_24"
         />
 
     <item
-        android:id="@+id/settingsActivity"
+        android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/outline_settings_24"
         />

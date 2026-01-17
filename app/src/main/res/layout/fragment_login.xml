@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ui.start.fragments.LoginFragment"
-    android:background="@color/l_background">
+    android:orientation="vertical"
+    android:background="@color/l_background"
+    >
 
     <!-- LOGIN IMAGE -->
     <ImageView
@@ -39,19 +40,12 @@
             android:textSize="@dimen/sub_title_size"
             android:gravity="center|start"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/do_you_already_have_an_account"
-            android:gravity="center|start"
-            android:textSize="12sp"
-            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             app:startIconDrawable="@drawable/outline_alternate_email_24">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -60,14 +54,14 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textSize="16sp"
+
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             app:passwordToggleEnabled="true"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:startIconDrawable="@drawable/key_24px">
@@ -78,17 +72,17 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textSize="16sp"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             style="@style/Widget.Material3.Button.TextButton"
+            android:id="@+id/signup_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:textSize="8sp"
             android:gravity="center|start"
-            android:text="@string/i_forgot_my_password"
+            android:text="@string/i_have_to_signup"
             android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
         <Button
@@ -135,6 +129,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/google_login_button"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

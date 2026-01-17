@@ -1,4 +1,4 @@
-package com.uni_project.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.quest;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -83,8 +84,10 @@ public class QuestViewFragment extends Fragment {
         buttonStar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isStarred = isChecked;
             if (isChecked) {
+                // TODO: Add the quest to the user's saved list in Firestore/local DB
                 Toast.makeText(getContext(), "Quest added to starred!", Toast.LENGTH_SHORT).show();
             } else {
+                // TODO: Remove the quest from the user's saved list
                 Toast.makeText(getContext(), "Quest removed from starred", Toast.LENGTH_SHORT).show();
             }
         });
@@ -100,11 +103,9 @@ public class QuestViewFragment extends Fragment {
 
 
         View.OnClickListener creatorProfileClickListener = v -> {
-
-
             Toast.makeText(getContext(), "Navigating to creator's profile...", Toast.LENGTH_SHORT).show();
-            // NavHostFragment.findNavController(QuestViewFragment.this)
-            //      .navigate(R.id.action_questViewFragment_to_userProfileFragment);
+            NavHostFragment.findNavController(QuestViewFragment.this)
+                    .navigate(R.id.action_questViewFragment_to_profileFragment);
         };
 
         imageViewCreatorAvatar.setOnClickListener(creatorProfileClickListener);

@@ -8,6 +8,7 @@
     <string name="button">button</string>
     <string name="menu_button">menu button status bar</string>
     <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
     <string name="user_description">USER DESCRIPTION</string>
     <string name="user_score">USER SCORE</string>
     <string name="username">USERNAME</string>
@@ -27,6 +28,11 @@
     <string name="signup">Signup</string>
     <string name="login_image">login image</string>
     <string name="app_sign_up">QuestMaster - Sign up</string>
+    <string name="password_requirements">The password must be 7–20 char long,
+                                    contain at least one lower and one upper
+                                    case letter, a number and one special
+                                    character (@#$%^&amp;+=())</string>
+
 
     <string name="quest_name">Quest Name</string>
     <string name="quest_description">Quest Description</string>
@@ -58,5 +64,14 @@
     <string name="edit_username">edit username</string>
     <string name="edit_description">edit description</string>
     <string name="saved_quests">Saved Quests</string>
+    <string name="error_user_not_found">ERROR! user not found</string>
+    <string name="error_invalid_credentials">ERROR! Invalid credentials</string>
+    <string name="authentication_failed">ERROR! Authentication failed</string>
+    <string name="title_home">HOME</string>
+    <string name="i_have_to_signup">I have to Signup</string>
+    <string name="following">Following</string>
+    <string name="followers">Followers</string>
+    <string name="logout">Logout</string>
+    <string name="google_sign_in_failed">Google sign in failed</string>
 
 </resources>

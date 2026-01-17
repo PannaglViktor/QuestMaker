@@ -1,49 +1,60 @@
 package com.uni_project.questmaster.ui.home.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.uni_project.questmaster.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "ProfileFragment";
+    private static final String ARG_USER_ID = "userId";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String userId;
+    private String currentUserId;
+
+    private ShapeableImageView profileImage;
+    private TextView profileName, profileScore, profileDescription, followersCount, followingCount;
+    private Button followButton;
+    private LinearLayout followersLayout, followingLayout;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private FirebaseStorage storage;
 
     public ProfileFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
+    public static ProfileFragment newInstance(String userId) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,16 +62,164 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            currentUserId = currentUser.getUid();
+        }
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userId = getArguments().getString(ARG_USER_ID);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        profileImage = view.findViewById(R.id.profileImage);
+        profileName = view.findViewById(R.id.profileName);
+        profileScore = view.findViewById(R.id.profileScore);
+        profileDescription = view.findViewById(R.id.profileDescription);
+        followButton = view.findViewById(R.id.followButton);
+        followersCount = view.findViewById(R.id.followersCount);
+        followingCount = view.findViewById(R.id.followingCount);
+        followersLayout = view.findViewById(R.id.followersLayout);
+        followingLayout = view.findViewById(R.id.followingLayout);
+
+
+        if (userId != null) {
+            // Hide follow button if viewing own profile
+            if (userId.equals(currentUserId)) {
+                followButton.setVisibility(View.GONE);
+            } else {
+                followButton.setVisibility(View.VISIBLE);
+                checkIfFollowing();
+                followButton.setOnClickListener(v -> toggleFollow());
+            }
+            loadUserProfile();
+            loadCounts();
+            setupClickListeners();
+        } else {
+            Log.e(TAG, "User ID is null.");
+        }
+    }
+
+    private void loadUserProfile() {
+        DocumentReference userRef = db.collection("users").document(userId);
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    profileName.setText(document.getString("username"));
+                    profileDescription.setText(document.getString("description"));
+
+                    if (document.contains("score")) {
+                        profileScore.setText(String.format("Score: %d", document.getLong("score")));
+                    } else {
+                        profileScore.setText("Score: 0");
+                    }
+
+                    // Glide image
+                    if (document.contains("profileImageUrl")) {
+                        String imageUrl = document.getString("profileImageUrl");
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            StorageReference imageRef = storage.getReferenceFromUrl(imageUrl);
+                            Glide.with(this)
+                                    .load(imageRef)
+                                    .placeholder(R.drawable.ic_launcher_foreground) // Immagine segnaposto
+                                    .error(R.drawable.ic_launcher_foreground) // Immagine di errore
+                                    .into(profileImage);
+                        }
+                    }
+
+                } else {
+                    Log.d(TAG, "No such document");
+                    Toast.makeText(getContext(), "User profile not found.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
+                Toast.makeText(getContext(), "Failed to load profile.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadCounts() {
+        // Followers
+        db.collection("users").document(userId).collection("followers")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> followersCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+
+        // Following
+        db.collection("users").document(userId).collection("following")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> followingCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+    }
+
+    private void setupClickListeners() {
+        followersLayout.setOnClickListener(v -> {
+            Bundle bundle = FollowListFragment.newBundle(userId, "followers");
+            NavHostFragment.findNavController(this).navigate(R.id.action_profileFragment_to_followListFragment, bundle);
+        });
+
+        followingLayout.setOnClickListener(v -> {
+            Bundle bundle = FollowListFragment.newBundle(userId, "following");
+            NavHostFragment.findNavController(this).navigate(R.id.action_profileFragment_to_followListFragment, bundle);
+        });
+    }
+
+    private void checkIfFollowing() {
+        if (currentUserId == null) return;
+        DocumentReference followingRef = db.collection("users").document(currentUserId)
+                .collection("following").document(userId);
+
+        followingRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult().exists()) {
+                followButton.setText(R.string.unfollow);
+            } else {
+                followButton.setText(R.string.follow);
+            }
+        });
+    }
+
+    private void toggleFollow() {
+        if (currentUserId == null) {
+            Toast.makeText(getContext(), "You must be logged in to follow users.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DocumentReference followingRef = db.collection("users").document(currentUserId)
+                .collection("following").document(userId);
+        DocumentReference followerRef = db.collection("users").document(userId)
+                .collection("followers").document(currentUserId);
+
+        followingRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
+                    // Unfollow
+                    followingRef.delete().addOnSuccessListener(aVoid -> loadCounts());
+                    followerRef.delete();
+                    followButton.setText(R.string.follow);
+                } else {
+                    // Follow
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+                    followingRef.set(data).addOnSuccessListener(aVoid -> loadCounts());
+                    followerRef.set(data);
+                    followButton.setText(R.string.unfollow);
+                }
+            } else {
+                Log.e(TAG, "Error checking following status", task.getException());
+            }
+        });
     }
 }

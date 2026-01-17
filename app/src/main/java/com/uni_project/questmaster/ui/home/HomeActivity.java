@@ -1,25 +1,57 @@
 package com.uni_project.questmaster.ui.home;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.uni_project.questmaster.R;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.uni_project.questmaster.R;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private NavController navController;
+    private AppBarConfiguration appBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-        NavController navController = navHostFragment.getNavController();
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragmentContainerView);
+        navController = navHostFragment.getNavController();
+
+        Set<Integer> topLevelDestinations = new HashSet<>();
+        topLevelDestinations.add(R.id.feedFragment);
+        topLevelDestinations.add(R.id.makeQuestFragment);
+        topLevelDestinations.add(R.id.personalProfileFragment);
+        topLevelDestinations.add(R.id.settingsFragment);
+
+        appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations).build();
+
+        // Link Toolbar to NavController
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+
+        // Link BottomNavigationView to NavController
         NavigationUI.setupWithNavController(bottomNav, navController);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // NavController handles the back action
+        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }
