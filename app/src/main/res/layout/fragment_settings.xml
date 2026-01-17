@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurfaceContainer"
+    android:id="@+id/settingsFragment"
+    tools:context=".ui.home.fragments.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- ASPECT  -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    style="@style/SettingsSectionTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/appearance" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_dark_mode"
+                    style="@style/SettingsRow"
+                    android:drawableStart="@drawable/ic_dark_mode"
+                    android:text="@string/dark_mode" />
+
+                <LinearLayout
+                    android:id="@+id/setting_language"
+                    style="@style/SettingsRow.Clickable">
+
+                    <ImageView
+                        style="@style/SettingsIcon"
+                        android:src="@drawable/ic_language"
+                        android:contentDescription="@string/language" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SettingsItemText"
+                            android:text="@string/language" />
+
+                        <TextView
+                            android:id="@+id/text_view_current_language"
+                            style="@style/SettingsItemSubText"
+                            tools:text="English" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- POSITION -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    style="@style/SettingsSectionTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/localization" />
+
+                <LinearLayout
+                    android:id="@+id/setting_location"
+                    style="@style/SettingsRow.Clickable">
+
+                    <ImageView
+                        style="@style/SettingsIcon"
+                        android:src="@drawable/ic_location"
+                        android:contentDescription="@string/country_region_city" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SettingsItemText"
+                            android:text="@string/country_region_city" />
+
+                        <TextView
+                            android:id="@+id/text_view_current_location"
+                            style="@style/SettingsItemSubText"
+                            tools:text="United States, California" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- NOTIFICATIONS -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    style="@style/SettingsSectionTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/notifications" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_notifications_new_quests"
+                    style="@style/SettingsRow"
+                    android:drawableStart="@drawable/ic_explore"
+                    android:text="@string/new_quest_alerts" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/switch_notifications_comments"
+                    style="@style/SettingsRow"
+                    android:drawableStart="@drawable/ic_comment"
+                    android:text="@string/comment_notifications" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- APP INFO -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    style="@style/SettingsSectionTitle"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/about" />
+
+                <LinearLayout
+                    android:id="@+id/setting_app_info"
+                    style="@style/SettingsRow.Clickable">
+
+                    <ImageView
+                        style="@style/SettingsIcon"
+                        android:src="@drawable/ic_info"
+                        android:contentDescription="@string/app_info"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/SettingsItemText"
+                            android:text="@string/app_info" />
+
+                        <TextView
+                            android:id="@+id/text_view_app_version"
+                            style="@style/SettingsItemSubText"
+                            tools:text="Version 1.0.0" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>
