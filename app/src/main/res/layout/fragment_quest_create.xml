@@ -8,8 +8,6 @@
     android:id="@+id/makeQuestFragment"
     tools:context=".ui.home.fragments.QuestCreateFragment">
 
-    <!-- Header and Menu Icon have been removed -->
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -18,14 +16,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">  <!-- Changed to parent top -->
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp">
 
-            <!-- Container -->
             <LinearLayout
                 android:id="@+id/quest_container"
                 android:layout_width="0dp"
@@ -36,9 +33,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"> <!-- Added margin top for spacing -->
+                android:layout_marginTop="16dp">
 
-                <!--  Name -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_quest_name"
                     android:layout_width="match_parent"
@@ -46,7 +42,6 @@
                     android:hint="@string/quest_name"
                     android:inputType="textCapWords" />
 
-                <!--  Description -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_quest_description"
                     android:layout_width="match_parent"
@@ -57,7 +52,6 @@
                     android:inputType="textMultiLine"
                     android:minLines="3" />
 
-                <!-- ppq -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_ppq"
                     android:layout_width="match_parent"
@@ -66,34 +60,67 @@
                     android:hint="@string/points_per_quest"
                     android:inputType="number" />
 
+                <TextView
+                    android:id="@+id/map_options_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Map Options"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <!-- Map  -->
+                <RadioGroup
+                    android:id="@+id/map_options_radiogroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp">
+
+                    <RadioButton
+                        android:id="@+id/radio_no_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No Map"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_single_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Single Location"/>
+
+                    <RadioButton
+                        android:id="@+id/radio_start_end"
+                        android:layout_width="wrap_content"
+        
+                        android:layout_height="wrap_content"
+                        android:text="Start and End Points"/>
+                </RadioGroup>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/map_card"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginTop="20dp"
-                    app:cardCornerRadius="12dp">
+                    app:cardCornerRadius="12dp"
+                    android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/map_placeholder"
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/map_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/map_placeholder"
-                        android:contentDescription="@string/map_preview"/>
+                        android:layout_height="match_parent" />
 
                 </androidx.cardview.widget.CardView>
 
-
-                <!-- Locations -->
                 <LinearLayout
+                    android:id="@+id/location_fields_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="8dp"
                     android:background="@color/d_palette"
-                    android:padding="12dp">
+                    android:padding="12dp"
+                    android:visibility="gone">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/startingPoint"
@@ -102,7 +129,8 @@
                         android:textColor="@color/l_text"
                         android:textSize="16sp"
                         android:hint="Starting Point"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:visibility="gone"/>
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/endPoint"
@@ -111,12 +139,22 @@
                         android:textColor="@color/l_text"
                         android:textSize="16sp"
                         android:hint="Ending Point"
-                        android:inputType="textCapWords" />
+                        android:inputType="textCapWords"
+                        android:visibility="gone"/>
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/singleLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/l_text"
+                        android:textSize="16sp"
+                        android:hint="Location"
+                        android:inputType="textCapWords"
+                        android:visibility="gone"/>
                 </LinearLayout>
 
-                <!-- Save Button -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_save_publish"
+                    android:id="@+id/button_save_quest"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -15,8 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.uni_project.questmaster.R;
-import com.uni_project.questmaster.model.QuestCard;
-import com.uni_project.questmaster.ui.home.adapters.QuestCardAdapter;
+import com.uni_project.questmaster.adapter.QuestAdapter;
+import com.uni_project.questmaster.model.Quest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class FeedFragment extends Fragment {
 
     private static final String TAG = "FeedFragment";
     private RecyclerView recyclerView;
-    private QuestCardAdapter questCardAdapter;
+    private QuestAdapter questAdapter;
     private CircularProgressIndicator loadingIndicator;
     private FirebaseFirestore db;
 
@@ -48,9 +49,9 @@ public class FeedFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        questCardAdapter = new QuestCardAdapter();
+        questAdapter = new QuestAdapter(getContext(), new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(questCardAdapter);
+        recyclerView.setAdapter(questAdapter);
     }
 
     private void fetchQuests() {
@@ -63,12 +64,13 @@ public class FeedFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     loadingIndicator.setVisibility(View.GONE);
                     if (task.isSuccessful() && task.getResult() != null) {
-                        List<QuestCard> questList = new ArrayList<>();
+                        List<Quest> questList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            QuestCard quest = document.toObject(QuestCard.class);
+                            Quest quest = document.toObject(Quest.class);
+                            quest.setId(document.getId());
                             questList.add(quest);
                         }
-                        questCardAdapter.setQuests(questList);
+                        questAdapter.setQuests(questList);
                         recyclerView.setVisibility(View.VISIBLE);
                     } else {
                         Log.w(TAG, "Error getting documents", task.getException());

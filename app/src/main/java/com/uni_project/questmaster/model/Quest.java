@@ -20,6 +20,11 @@ public class Quest {
     private Date timestamp;
     private List<String> savedBy;
 
+    private QuestLocation startPoint;
+    private QuestLocation endPoint;
+    private QuestLocation location;
+
+
     public Quest() {
     }
 
@@ -30,6 +35,18 @@ public class Quest {
         this.ownerName = ownerName;
         this.imageUrls = imageUrls;
         this.savedBy = savedBy;
+    }
+
+    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, QuestLocation startPoint, QuestLocation endPoint, QuestLocation location) {
+        this.title = title;
+        this.description = description;
+        this.ownerId = ownerId;
+        this.ownerName = ownerName;
+        this.imageUrls = imageUrls;
+        this.savedBy = savedBy;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.location = location;
     }
 
     public String getId() {
@@ -94,5 +111,29 @@ public class Quest {
 
     public void setSavedBy(List<String> savedBy) {
         this.savedBy = savedBy;
+    }
+
+    public QuestLocation getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(QuestLocation startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public QuestLocation getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(QuestLocation endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public QuestLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(QuestLocation location) {
+        this.location = location;
     }
 }

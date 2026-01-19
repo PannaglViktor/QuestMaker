@@ -1,4 +1,4 @@
-package com.uni_project.questmaster.ui.home.adapters;
+package com.uni_project.questmaster.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +22,6 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // You need a simple layout with just an ImageView for the ViewPager items
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_image_slider, parent, false);
         return new ImageViewHolder(view);
     }
@@ -30,7 +29,6 @@ public class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         String imageUrl = imageUrls.get(position);
-        // Using Glide to load the image from a URL into the ImageView
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
                 .into(holder.imageView);
