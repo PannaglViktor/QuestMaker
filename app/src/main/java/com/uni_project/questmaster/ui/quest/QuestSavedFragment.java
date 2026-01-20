@@ -23,7 +23,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
-public class QuestSavedFragment extends Fragment {
+public class QuestSavedFragment extends Fragment implements QuestAdapter.OnQuestClickListener {
 
     private static final String TAG = "QuestSavedFragment";
     private RecyclerView savedQuestsRecyclerView;
@@ -48,7 +48,7 @@ public class QuestSavedFragment extends Fragment {
         savedQuestsRecyclerView = view.findViewById(R.id.savedQuestsRecyclerView);
         savedQuestsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         savedQuestsList = new ArrayList<>();
-        questAdapter = new QuestAdapter(getContext(), savedQuestsList);
+        questAdapter = new QuestAdapter(getContext(), savedQuestsList, this);
         savedQuestsRecyclerView.setAdapter(questAdapter);
 
         loadSavedQuests();
@@ -58,7 +58,6 @@ public class QuestSavedFragment extends Fragment {
         String currentUserId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
         if (currentUserId == null) {
             Log.w(TAG, "User not logged in, cannot load saved quests");
-            // Handle user not logged in
             return;
         }
 
@@ -77,5 +76,11 @@ public class QuestSavedFragment extends Fragment {
                 Log.e(TAG, "Error getting saved quests: ", task.getException());
             }
         });
+    }
+
+    @Override
+    public void onQuestClick(Quest quest) {
+        // TODO: Implement action on saved quest click
+        Log.d(TAG, "Clicked on quest: " + quest.getId());
     }
 }

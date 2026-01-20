@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
@@ -21,7 +22,7 @@ import com.uni_project.questmaster.model.Quest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends Fragment implements QuestAdapter.OnQuestClickListener {
 
     private static final String TAG = "FeedFragment";
     private RecyclerView recyclerView;
@@ -49,7 +50,7 @@ public class FeedFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        questAdapter = new QuestAdapter(getContext(), new ArrayList<>());
+        questAdapter = new QuestAdapter(getContext(), new ArrayList<>(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(questAdapter);
     }
@@ -76,5 +77,13 @@ public class FeedFragment extends Fragment {
                         Log.w(TAG, "Error getting documents", task.getException());
                     }
                 });
+    }
+
+    @Override
+    public void onQuestClick(Quest quest) {
+        Bundle bundle = new Bundle();
+        bundle.putString("questId", quest.getId());
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_feedFragment_to_questViewFragment, bundle);
     }
 }

@@ -1,7 +1,11 @@
 package com.uni_project.questmaster.ui.home.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +16,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.uni_project.questmaster.R;
 import com.google.android.material.materialswitch.MaterialSwitch;
+
+import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
 
     private MaterialSwitch switchDarkMode, switchNotificationsNewQuests, switchNotificationsComments;
     private LinearLayout settingLanguage, settingLocation, settingAppInfo;
     private TextView textViewCurrentLanguage, textViewCurrentLocation, textViewAppVersion;
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -34,6 +43,7 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        sharedPreferences = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         initializeViews(view);
         setupClickListeners();
         loadCurrentSettings();
@@ -45,19 +55,19 @@ public class SettingsFragment extends Fragment {
         switchNotificationsNewQuests = view.findViewById(R.id.switch_notifications_new_quests);
         switchNotificationsComments = view.findViewById(R.id.switch_notifications_comments);
 
-        // Clickable LinearLayouts
+        // LinearLayouts
         settingLanguage = view.findViewById(R.id.setting_language);
         settingLocation = view.findViewById(R.id.setting_location);
         settingAppInfo = view.findViewById(R.id.setting_app_info);
 
-        // TextViews for values
+        // TextViews
         textViewCurrentLanguage = view.findViewById(R.id.text_view_current_language);
         textViewCurrentLocation = view.findViewById(R.id.text_view_current_location);
         textViewAppVersion = view.findViewById(R.id.text_view_app_version);
     }
 
     private void setupClickListeners() {
-        // Dark Mode Switch
+        // Dark Mode
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -66,14 +76,22 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        switchNotificationsNewQuests.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveNotificationPreference("new_quests", isChecked);
+        });
+
+        switchNotificationsComments.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            saveNotificationPreference("comments", isChecked);
+        });
+
         // Language Setting
         settingLanguage.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Language selection clicked", Toast.LENGTH_SHORT).show();
+            showLanguageSelectionDialog();
         });
 
         // Location Setting
         settingLocation.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Location selection clicked", Toast.LENGTH_SHORT).show();
+            NavHostFragment.findNavController(this).navigate(R.id.action_settingsFragment_to_locationSelectionFragment);
         });
 
         // App Info
@@ -83,15 +101,19 @@ public class SettingsFragment extends Fragment {
     }
 
     private void loadCurrentSettings() {
-        // Load Dark Mode state
+        // Dark Mode state
         int currentNightMode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
         switchDarkMode.setChecked(currentNightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES);
 
-        // Load saved language and display it
-        textViewCurrentLanguage.setText("English");
+        // Load saved language
+        String language = sharedPreferences.getString("My_Lang", "en");
+        Locale locale = new Locale(language);
+        textViewCurrentLanguage.setText(locale.getDisplayLanguage());
 
-        // Load saved location and display it
-        textViewCurrentLocation.setText("United Kingdom, London");
+
+        // Load saved location
+        String location = sharedPreferences.getString("My_Location", "United Kingdom");
+        textViewCurrentLocation.setText(location);
 
         // Load App Version
         try {
@@ -103,8 +125,40 @@ public class SettingsFragment extends Fragment {
             textViewAppVersion.setText("Version not found");
         }
 
-        // Load saved notification preferences
-        switchNotificationsNewQuests.setChecked(true);
-        switchNotificationsComments.setChecked(true);
+        // Load saved notification
+        switchNotificationsNewQuests.setChecked(sharedPreferences.getBoolean("new_quests", true));
+        switchNotificationsComments.setChecked(sharedPreferences.getBoolean("comments", true));
+    }
+
+    private void showLanguageSelectionDialog() {
+        final String[] languages = {"English", "Spanish", "French", "German"}; // Add more languages as needed
+        final String[] languageCodes = {"en", "es", "fr", "de"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Select Language")
+                .setItems(languages, (dialog, which) -> {
+                    setLocale(languageCodes[which]);
+                });
+        builder.create().show();
+    }
+
+    private void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Resources resources = getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+
+        // Save locale to SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("My_Lang", languageCode);
+        editor.apply();
+        requireActivity().recreate();
+    }
+
+    private void saveNotificationPreference(String key, boolean value) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
     }
 }

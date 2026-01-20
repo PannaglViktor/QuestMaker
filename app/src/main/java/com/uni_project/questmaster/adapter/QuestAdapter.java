@@ -1,6 +1,9 @@
 package com.uni_project.questmaster.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.uni_project.questmaster.R;
 import com.uni_project.questmaster.model.Quest;
 
@@ -25,11 +30,19 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
 
     private final Context context;
     private final List<Quest> questList;
+    private final FirebaseFirestore db;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+    private final OnQuestClickListener onQuestClickListener;
 
-    public QuestAdapter(Context context, List<Quest> questList) {
+    public interface OnQuestClickListener {
+        void onQuestClick(Quest quest);
+    }
+
+    public QuestAdapter(Context context, List<Quest> questList, OnQuestClickListener onQuestClickListener) {
         this.context = context;
         this.questList = questList;
+        this.db = FirebaseFirestore.getInstance();
+        this.onQuestClickListener = onQuestClickListener;
     }
 
     @NonNull
@@ -42,7 +55,12 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
     @Override
     public void onBindViewHolder(@NonNull QuestViewHolder holder, int position) {
         Quest quest = questList.get(position);
-        holder.bind(quest, context);
+        holder.bind(quest, context, db);
+        holder.itemView.setOnClickListener(v -> {
+            if (onQuestClickListener != null) {
+                onQuestClickListener.onQuestClick(quest);
+            }
+        });
     }
 
     @Override
@@ -72,9 +90,27 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
             tabIndicator = itemView.findViewById(R.id.tabIndicator);
         }
 
-        public void bind(Quest quest, Context context) {
+        public void bind(Quest quest, Context context, FirebaseFirestore db) {
             usernameTextView.setText(quest.getOwnerName());
             descriptionTextView.setText(quest.getDescription());
+
+            if (quest.getOwnerId() != null && !quest.getOwnerId().isEmpty()) {
+                db.collection("users").document(quest.getOwnerId()).get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String username = documentSnapshot.getString("username");
+                                usernameTextView.setText(username);
+                            } else {
+                                Log.w("QuestAdapter", "User not found with ID: " + quest.getOwnerId());
+                                usernameTextView.setText("Unknown User");
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("QuestAdapter", "Error fetching user", e);
+                            usernameTextView.setText(quest.getOwnerName());
+                        });
+            }
+
 
             if (quest.getTimestamp() != null) {
                 dateTextView.setText(new SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(quest.getTimestamp()));
@@ -93,12 +129,12 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
                         quest.getLocation().getLatitude() + "," + quest.getLocation().getLongitude() +
                         "&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C" +
                         quest.getLocation().getLatitude() + "," + quest.getLocation().getLongitude() +
-                        "&key=YOUR_STATIC_API_KEY"; 
+                        "&key=AIzaSyBDUhzGs292Fad_UxWXTDrXWmCaeD2BZpY";
             } else if (quest.getStartPoint() != null && quest.getEndPoint() != null) {
                 mapUrl = "https://maps.googleapis.com/maps/api/staticmap?size=600x300&maptype=roadmap" +
                         "&markers=color:blue%7Clabel:S%7C" + quest.getStartPoint().getLatitude() + "," + quest.getStartPoint().getLongitude() +
                         "&markers=color:green%7Clabel:E%7C" + quest.getEndPoint().getLatitude() + "," + quest.getEndPoint().getLongitude() +
-                        "&key=YOUR_STATIC_API_KEY"; 
+                        "&key=AIzaSyBDUhzGs292Fad_UxWXTDrXWmCaeD2BZpY";
             }
 
             if (mapUrl != null) {
@@ -108,11 +144,10 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
             if (!allMedia.isEmpty()) {
                 questImagesViewPager.setVisibility(View.VISIBLE);
                 tabIndicator.setVisibility(View.VISIBLE);
-                ImageSliderAdapter imageAdapter = new ImageSliderAdapter(allMedia);
+                ImageSliderAdapter imageAdapter = new ImageSliderAdapter(allMedia, quest, context);
                 questImagesViewPager.setAdapter(imageAdapter);
 
-                new TabLayoutMediator(tabIndicator, questImagesViewPager, (tab, position) -> {})
-                .attach();
+                new TabLayoutMediator(tabIndicator, questImagesViewPager, (tab, position) -> {}).attach();
             } else {
                 questImagesViewPager.setVisibility(View.GONE);
                 tabIndicator.setVisibility(View.GONE);
@@ -123,9 +158,13 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
     public static class ImageSliderAdapter extends RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder> {
 
         private final List<String> mediaUrls;
+        private final Quest quest;
+        private final Context context;
 
-        public ImageSliderAdapter(List<String> mediaUrls) {
+        public ImageSliderAdapter(List<String> mediaUrls, Quest quest, Context context) {
             this.mediaUrls = mediaUrls;
+            this.quest = quest;
+            this.context = context;
         }
 
         @NonNull
@@ -141,6 +180,31 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
             Glide.with(holder.imageView.getContext())
                     .load(mediaUrl)
                     .into(holder.imageView);
+
+            if (mediaUrl.startsWith("https://maps.googleapis.com/maps/api/staticmap")) {
+                holder.imageView.setOnClickListener(v -> {
+                    if (quest.getLocation() != null) {
+                        Uri gmmIntentUri = Uri.parse("geo:" + quest.getLocation().getLatitude() + "," + quest.getLocation().getLongitude() + "?q=" + quest.getLocation().getLatitude() + "," + quest.getLocation().getLongitude() + "(Quest Location)");
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(mapIntent);
+                        }
+                    } else if (quest.getStartPoint() != null && quest.getEndPoint() != null) {
+                        Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
+                                quest.getStartPoint().getLatitude() + "," + quest.getStartPoint().getLongitude() +
+                                "&destination=" + quest.getEndPoint().getLatitude() + "," + quest.getEndPoint().getLongitude());
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(mapIntent);
+                        }
+                    }
+                });
+            } else {
+                holder.imageView.setOnClickListener(null);
+            }
+
         }
 
         @Override

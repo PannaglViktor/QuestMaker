@@ -19,12 +19,20 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.uni_project.questmaster.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView; // Import for ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.uni_project.questmaster.model.Quest;
+
+import java.util.List;
 
 public class QuestViewFragment extends Fragment {
 
@@ -44,6 +52,9 @@ public class QuestViewFragment extends Fragment {
     private TextView textViewCreatorName;
 
     private boolean isStarred = false;
+    private String questId;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
 
     @Nullable
     @Override
@@ -55,6 +66,13 @@ public class QuestViewFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        db = FirebaseFirestore.getInstance();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (getArguments() != null) {
+            questId = getArguments().getString("questId");
+        }
 
         initializeViews(view);
         setupClickListeners();
@@ -82,13 +100,13 @@ public class QuestViewFragment extends Fragment {
 
     private void setupClickListeners() {
         buttonStar.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            isStarred = isChecked;
-            if (isChecked) {
-                // TODO: Add the quest to the user's saved list in Firestore/local DB
-                Toast.makeText(getContext(), "Quest added to starred!", Toast.LENGTH_SHORT).show();
-            } else {
-                // TODO: Remove the quest from the user's saved list
-                Toast.makeText(getContext(), "Quest removed from starred", Toast.LENGTH_SHORT).show();
+            if (currentUser != null && questId != null) {
+                DocumentReference userRef = db.collection("users").document(currentUser.getUid());
+                if (isChecked) {
+                    userRef.update("savedQuests", FieldValue.arrayUnion(questId));
+                } else {
+                    userRef.update("savedQuests", FieldValue.arrayRemove(questId));
+                }
             }
         });
 
@@ -120,32 +138,48 @@ public class QuestViewFragment extends Fragment {
     }
 
     private void loadQuestData() {
+        if (questId != null) {
+            db.collection("quests").document(questId).get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Quest quest = documentSnapshot.toObject(Quest.class);
+                    if (quest != null) {
+                        textViewQuestName.setText(quest.getTitle());
+                        textViewQuestDescription.setText(quest.getDescription());
 
-        textViewQuestName.setText("The Lost Artifact of the Ancients");
-        textViewQuestDescription.setText("An ancient legend speaks of a treasure hidden in the heart of the city. Only the bravest will decipher the clues and find it.");
-        textViewCreatorName.setText("by Arthur");
+                        // Load creator info
+                        db.collection("users").document(quest.getOwnerId()).get().addOnSuccessListener(userDocument -> {
+                            if (userDocument.exists()) {
+                                textViewCreatorName.setText("by " + userDocument.getString("username"));
+                                // Load creator avatar using Glide
+                            }
+                        });
 
-        // Glide.with(this).load("URL_CREATOR_IMAGE").into(imageViewCreatorAvatar);
-        imageViewCreatorAvatar.setImageResource(R.drawable.quest_icon);
+                        /* Load tags
+                        chipGroupTags.removeAllViews();
+                        if (quest.getTags() != null) {
+                            for (String tagText : quest.getTags()) {
+                                Chip chip = new Chip(requireContext());
+                                chip.setText(tagText);
+                                chipGroupTags.addView(chip);
+                            }
+                        }*/
 
-        isStarred = true;
-        buttonStar.setChecked(isStarred);
+                        // Check if the quest is starred
+                        if (currentUser != null) {
+                            db.collection("users").document(currentUser.getUid()).get().addOnSuccessListener(userDocument -> {
+                                if (userDocument.exists()) {
+                                    List<String> savedQuests = (List<String>) userDocument.get("savedQuests");
+                                    if (savedQuests != null && savedQuests.contains(questId)) {
+                                        buttonStar.setChecked(true);
+                                    }
+                                }
+                            });
+                        }
 
-        chipGroupTags.removeAllViews();
-        String[] tags = {"Drinking", "Trip", "Outdoor", "Tour", "Adventure", "Pub crawl"};
-        for (String tagText : tags) {
-            Chip chip = new Chip(requireContext());
-            chip.setText(tagText);
-            chipGroupTags.addView(chip);
+                    }
+                }
+            });
         }
-
-        // Glide.with(this)
-        //      .load("URL_IMG/URL_STATIC_MAP")
-        //      .placeholder(R.drawable.map_placeholder)
-        //      .into(imageViewQuestMedia);
-        imageViewQuestMedia.setImageResource(R.drawable.map_placeholder);
-        // List<Comment> comments = getCommentsForThisQuest();
-        // commentAdapter.updateComments(comments);
     }
 
     private void shareQuest() {

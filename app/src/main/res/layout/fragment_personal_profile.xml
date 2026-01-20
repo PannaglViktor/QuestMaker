@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-        <!-- PROFILE IMAGE -->
+    <!-- PROFILE IMAGE -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImage"
         android:layout_width="200dp"
@@ -154,14 +154,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/profileName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/username"
+                android:background="@android:color/transparent"
+                android:hint="@string/username"
                 android:textColor="@color/black"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                android:enabled="false" />
 
             <ImageView
                 android:id="@+id/editNameIcon"
@@ -180,10 +182,19 @@
 
             <TextView
                 android:id="@+id/profileScore"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/user_score"
+                android:text="@string/your_score"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profilePpq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text=" ppq"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -195,16 +206,18 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:id="@+id/profileDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/user_description"
+                android:background="@android:color/transparent"
+                android:hint="@string/user_description"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:enabled="false" />
 
             <ImageView
                 android:id="@+id/editDescriptionIcon"

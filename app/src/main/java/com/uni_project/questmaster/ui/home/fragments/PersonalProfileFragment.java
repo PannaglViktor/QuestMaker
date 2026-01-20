@@ -20,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -42,7 +41,8 @@ public class PersonalProfileFragment extends Fragment {
 
     private static final String TAG = "PersonalProfileFragment";
     private ShapeableImageView profileImage;
-    private TextView profileName, profileDescription, profileScore, followersCount, followingCount;
+    private EditText profileName, profileDescription;
+    private TextView profileScore, followersCount, followingCount, profilePpq;
     private ImageView editNameIcon, editDescriptionIcon, logoutIcon;
     private Button savedQuestsButton;
     private LinearLayout followersLayout, followingLayout;
@@ -94,6 +94,7 @@ public class PersonalProfileFragment extends Fragment {
         profileName = view.findViewById(R.id.profileName);
         profileDescription = view.findViewById(R.id.profileDescription);
         profileScore = view.findViewById(R.id.profileScore);
+        profilePpq = view.findViewById(R.id.profilePpq);
         editNameIcon = view.findViewById(R.id.editNameIcon);
         editDescriptionIcon = view.findViewById(R.id.editDescriptionIcon);
         savedQuestsButton = view.findViewById(R.id.savedQuestsButton);
@@ -122,6 +123,12 @@ public class PersonalProfileFragment extends Fragment {
                     profileScore.setText(String.format("Score: %d", documentSnapshot.getLong("score")));
                 } else {
                     profileScore.setText("Score: 0");
+                }
+
+                if (documentSnapshot.contains("ppq")) {
+                    profilePpq.setText(String.format("%d ppq", documentSnapshot.getLong("ppq")));
+                } else {
+                    profilePpq.setText("0 ppq");
                 }
 
                 if (documentSnapshot.contains("profileImageUrl")) {
@@ -154,8 +161,9 @@ public class PersonalProfileFragment extends Fragment {
 
     private void setupClickListeners() {
         profileImage.setOnClickListener(v -> openGallery());
-        editNameIcon.setOnClickListener(v -> showEditDialog("Edit Username", profileName, "username"));
-        editDescriptionIcon.setOnClickListener(v -> showEditDialog("Edit Description", profileDescription, "description"));
+
+        editNameIcon.setOnClickListener(v -> toggleEdit(profileName, editNameIcon, "username"));
+        editDescriptionIcon.setOnClickListener(v -> toggleEdit(profileDescription, editDescriptionIcon, "description"));
 
         savedQuestsButton.setOnClickListener(v ->
                 NavHostFragment.findNavController(this).navigate(R.id.action_personalProfileFragment_to_questSavedFragment)
@@ -172,6 +180,18 @@ public class PersonalProfileFragment extends Fragment {
         });
 
         logoutIcon.setOnClickListener(v -> logoutUser());
+    }
+
+    private void toggleEdit(EditText editText, ImageView icon, String field) {
+        if (editText.isEnabled()) {
+            editText.setEnabled(false);
+            icon.setImageResource(R.drawable.ic_edit);
+            updateUserField(field, editText.getText().toString());
+        } else {
+            editText.setEnabled(true);
+            icon.setImageResource(R.drawable.ic_save);
+            editText.requestFocus();
+        }
     }
 
     private void logoutUser() {
@@ -202,28 +222,6 @@ public class PersonalProfileFragment extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void showEditDialog(String title, TextView textViewToUpdate, String fieldToUpdate) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle(title);
-
-        final EditText input = new EditText(requireContext());
-        input.setText(textViewToUpdate.getText());
-        builder.setView(input);
-
-        builder.setPositiveButton("Save", (dialog, which) -> {
-            String newText = input.getText().toString().trim();
-            if (!newText.isEmpty()) {
-                textViewToUpdate.setText(newText);
-                updateUserField(fieldToUpdate, newText);
-                Toast.makeText(getContext(), title + " updated.", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Field cannot be empty.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-    }
-
     private void updateUserField(String field, Object value) {
         if (currentUserId == null) return;
         DocumentReference userRef = db.collection("users").document(currentUserId);
@@ -231,6 +229,9 @@ public class PersonalProfileFragment extends Fragment {
         updates.put(field, value);
         userRef.update(updates)
                 .addOnSuccessListener(aVoid -> Log.d(TAG, "User field '" + field + "' updated successfully"))
-                .addOnFailureListener(e -> Log.e(TAG, "Error updating user field '" + field + "'", e));
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating user field '" + field + "'", e);
+                    Toast.makeText(getContext(), "Failed to update " + field, Toast.LENGTH_SHORT).show();
+                });
     }
 }

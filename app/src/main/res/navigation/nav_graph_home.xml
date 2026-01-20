@@ -80,6 +80,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_personalProfileFragment"
             app:destination="@id/personalProfileFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_locationSelectionFragment"
+            app:destination="@id/locationSelectionFragment" />
     </fragment>
 
     <!-- QUEST VIEW -->
@@ -88,6 +91,9 @@
         android:name="com.uni_project.questmaster.ui.quest.QuestViewFragment"
         android:label="QuestViewFragment"
         tools:layout="@layout/fragment_quest_view">
+        <argument
+            android:name="questId"
+            app:argType="string" />
         <action
             android:id="@+id/action_questViewFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -125,5 +131,12 @@
             android:id="@+id/action_followListFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
+
+    <!-- LOCATION SELECTION -->
+    <fragment
+        android:id="@+id/locationSelectionFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.LocationSelectionFragment"
+        android:label="fragment_location_selection"
+        tools:layout="@layout/fragment_location_selection" />
 
 </navigation>

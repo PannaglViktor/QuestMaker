@@ -5,7 +5,7 @@ public class User {
     private String username;
     private String email;
     private String avatarUrl;
-
+    private long ppq;
 
     public User() {}
 
@@ -14,6 +14,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.avatarUrl = null;
+        this.ppq = 0;
     }
 
     public String getUid() {
@@ -32,7 +33,9 @@ public class User {
         return avatarUrl;
     }
 
-
+    public long getPpq() {
+        return ppq;
+    }
 
     public void setUid(String uid) {
         this.uid = uid;
@@ -48,5 +51,9 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public void setPpq(long ppq) {
+        this.ppq = ppq;
     }
 }

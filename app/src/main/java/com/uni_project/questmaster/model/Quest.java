@@ -20,6 +20,8 @@ public class Quest {
     private Date timestamp;
     private List<String> savedBy;
 
+    private long ppq;
+
     private QuestLocation startPoint;
     private QuestLocation endPoint;
     private QuestLocation location;
@@ -28,16 +30,17 @@ public class Quest {
     public Quest() {
     }
 
-    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy) {
+    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, long ppq) {
         this.title = title;
         this.description = description;
         this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.imageUrls = imageUrls;
         this.savedBy = savedBy;
+        this.ppq = ppq;
     }
 
-    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, QuestLocation startPoint, QuestLocation endPoint, QuestLocation location) {
+    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, QuestLocation startPoint, QuestLocation endPoint, QuestLocation location, long ppq) {
         this.title = title;
         this.description = description;
         this.ownerId = ownerId;
@@ -47,6 +50,7 @@ public class Quest {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.location = location;
+        this.ppq = ppq;
     }
 
     public String getId() {
@@ -135,5 +139,13 @@ public class Quest {
 
     public void setLocation(QuestLocation location) {
         this.location = location;
+    }
+
+    public long getPpq() {
+        return ppq;
+    }
+
+    public void setPpq(long ppq) {
+        this.ppq = ppq;
     }
 }

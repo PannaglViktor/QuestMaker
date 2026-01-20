@@ -30,13 +30,12 @@
     <string name="app_sign_up">QuestMaster - Sign up</string>
     <string name="password_requirements">The password must be 7–20 char long,
                                     contain at least one lower and one upper
-                                    case letter, a number and one special
-                                    character (@#$%^&amp;+=())</string>
+                                    case letter and a number</string>
 
 
     <string name="quest_name">Quest Name</string>
     <string name="quest_description">Quest Description</string>
-    <string name="points_per_quest">Points Per Quest (PPQ)</string>
+    <string name="points_per_quest">Points Per Quest </string>
     <string name="map_preview">Map Preview</string>
     <string name="save">Save</string>
     <string name="welcome_back_adventurer">Welcome Back Adventurer!</string>
@@ -73,5 +72,7 @@
     <string name="followers">Followers</string>
     <string name="logout">Logout</string>
     <string name="google_sign_in_failed">Google sign in failed</string>
+    <string name="your_score">Your Score</string>
+    <string name="ppq">PPQ</string>
 
 </resources>

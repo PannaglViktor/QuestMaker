@@ -184,7 +184,7 @@ public class ProfileFragment extends Fragment {
 
         followingRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().exists()) {
-                followButton.setText(R.string.unfollow);
+                followButton.setText(R.string.following);
             } else {
                 followButton.setText(R.string.follow);
             }
@@ -206,16 +206,22 @@ public class ProfileFragment extends Fragment {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
                     // Unfollow
-                    followingRef.delete().addOnSuccessListener(aVoid -> loadCounts());
-                    followerRef.delete();
-                    followButton.setText(R.string.follow);
+                    followingRef.delete().addOnSuccessListener(aVoid -> {
+                        followerRef.delete().addOnSuccessListener(aVoid1 -> {
+                            loadCounts();
+                            followButton.setText(R.string.follow);
+                        });
+                    });
                 } else {
                     // Follow
                     Map<String, Object> data = new HashMap<>();
                     data.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
-                    followingRef.set(data).addOnSuccessListener(aVoid -> loadCounts());
-                    followerRef.set(data);
-                    followButton.setText(R.string.unfollow);
+                    followingRef.set(data).addOnSuccessListener(aVoid -> {
+                        followerRef.set(data).addOnSuccessListener(aVoid1 -> {
+                            loadCounts();
+                            followButton.setText(R.string.following);
+                        });
+                    });
                 }
             } else {
                 Log.e(TAG, "Error checking following status", task.getException());
