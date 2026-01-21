@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Dark Theme Palette -->
+    <color name="l_palette">#2E3A2C</color>
+    <color name="ml_palette">#3E4A3B</color>
+    <color name="m_palette">#505F4E</color>
+    <color name="md_palette">#81997A</color>
+    <color name="d_palette">#B2C9AB</color>
+
+    <color name="l_background">#121212</color>
+    <color name="m_background">#242424</color>
+
+    <color name="l_text">#E0E0E0</color>
+    <color name="d_text">#FFFFFF</color>
+</resources>

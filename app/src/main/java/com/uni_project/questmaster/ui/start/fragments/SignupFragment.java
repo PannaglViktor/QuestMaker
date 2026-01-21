@@ -83,6 +83,7 @@ public class SignupFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //VIEWS
         inputUsername = view.findViewById(R.id.textInputUsername);
         inputEmail = view.findViewById(R.id.textInputEmail);
         inputPassword = view.findViewById(R.id.textInputPassword);

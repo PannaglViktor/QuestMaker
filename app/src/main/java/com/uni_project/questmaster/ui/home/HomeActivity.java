@@ -1,7 +1,6 @@
 package com.uni_project.questmaster.ui.home;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -42,16 +41,13 @@ public class HomeActivity extends AppCompatActivity {
 
         appBarConfiguration = new AppBarConfiguration.Builder(topLevelDestinations).build();
 
-        // Link Toolbar to NavController
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
 
-        // Link BottomNavigationView to NavController
         NavigationUI.setupWithNavController(bottomNav, navController);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        // NavController handles the back action
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
     }
 }

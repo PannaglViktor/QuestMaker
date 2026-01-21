@@ -29,10 +29,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.uni_project.questmaster.R;
 import com.uni_project.questmaster.ui.start.StartActivity;
+import com.uni_project.questmaster.ui.utils.FollowListFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,13 +57,17 @@ public class PersonalProfileFragment extends Fragment {
 
     private Uri localImageUri = null;
 
+    private ListenerRegistration userListener;
+    private ListenerRegistration followersListener;
+    private ListenerRegistration followingListener;
+
     private final ActivityResultLauncher<Intent> pickImageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     localImageUri = result.getData().getData();
                     if (localImageUri != null) {
-                        Glide.with(this).load(localImageUri).into(profileImage);
+                        Glide.with(this).load(localImageUri).centerCrop().into(profileImage);
                         uploadProfileImage();
                     }
                 }
@@ -89,7 +95,7 @@ public class PersonalProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // views
+        // VIEWS
         profileImage = view.findViewById(R.id.profileImage);
         profileName = view.findViewById(R.id.profileName);
         profileDescription = view.findViewById(R.id.profileDescription);
@@ -105,24 +111,42 @@ public class PersonalProfileFragment extends Fragment {
         logoutIcon = view.findViewById(R.id.logoutIcon);
 
         if (currentUserId != null) {
-            loadUserData();
-            loadCounts();
+            attachUserDataListener();
+            attachCountListeners();
         }
 
         setupClickListeners();
     }
 
-    private void loadUserData() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (userListener != null) {
+            userListener.remove();
+        }
+        if (followersListener != null) {
+            followersListener.remove();
+        }
+        if (followingListener != null) {
+            followingListener.remove();
+        }
+    }
+
+    private void attachUserDataListener() {
         DocumentReference userRef = db.collection("users").document(currentUserId);
-        userRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
+        userListener = userRef.addSnapshotListener((documentSnapshot, e) -> {
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            if (documentSnapshot != null && documentSnapshot.exists()) {
                 profileName.setText(documentSnapshot.getString("username"));
                 profileDescription.setText(documentSnapshot.getString("description"));
 
                 if (documentSnapshot.contains("score")) {
                     profileScore.setText(String.format("Score: %d", documentSnapshot.getLong("score")));
                 } else {
-                    profileScore.setText("Score: 0");
+                    profileScore.setText("Score: ");
                 }
 
                 if (documentSnapshot.contains("ppq")) {
@@ -138,25 +162,40 @@ public class PersonalProfileFragment extends Fragment {
                         Glide.with(this).load(imageRef)
                                 .placeholder(R.drawable.ic_launcher_foreground)
                                 .error(R.drawable.ic_launcher_foreground)
+                                .centerCrop()
                                 .into(profileImage);
                     }
                 }
             } else {
                 Log.d(TAG, "User document does not exist");
             }
-        }).addOnFailureListener(e -> Log.e(TAG, "Error loading user data", e));
+        });
     }
 
-    private void loadCounts() {
-        // Followers
-        db.collection("users").document(currentUserId).collection("followers")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> followersCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+    private void attachCountListeners() {
+        // FOLLOWERS
+        followersListener = db.collection("users").document(currentUserId).collection("followers")
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    if (snapshots != null) {
+                        followersCount.setText(String.valueOf(snapshots.size()));
+                    }
+                });
 
-        // Following
-        db.collection("users").document(currentUserId).collection("following")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> followingCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+        // FOLLOWING
+        followingListener = db.collection("users").document(currentUserId).collection("following")
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    if (snapshots != null) {
+                        followingCount.setText(String.valueOf(snapshots.size()));
+                    }
+                });
     }
 
     private void setupClickListeners() {
@@ -228,9 +267,9 @@ public class PersonalProfileFragment extends Fragment {
         Map<String, Object> updates = new HashMap<>();
         updates.put(field, value);
         userRef.update(updates)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "User field '" + field + "' updated successfully"))
+                .addOnSuccessListener(aVoid -> Log.d(TAG, "User field '"+ field + "' updated successfully"))
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error updating user field '" + field + "'", e);
+                    Log.e(TAG, "Error updating user field '"+ field + "'", e);
                     Toast.makeText(getContext(), "Failed to update " + field, Toast.LENGTH_SHORT).show();
                 });
     }

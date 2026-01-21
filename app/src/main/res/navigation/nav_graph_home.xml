@@ -102,7 +102,7 @@
     <!-- PROFILE -->
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.ProfileFragment"
+        android:name="com.uni_project.questmaster.ui.utils.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <argument
@@ -119,12 +119,16 @@
         android:id="@+id/questSavedFragment"
         android:name="com.uni_project.questmaster.ui.quest.QuestSavedFragment"
         android:label="fragment_quest_saved"
-        tools:layout="@layout/fragment_quest_saved" />
+        tools:layout="@layout/fragment_quest_saved" >
+        <action
+            android:id="@+id/action_questSavedFragment_to_questViewFragment"
+            app:destination="@id/questViewFragment" />
+    </fragment>
 
     <!-- FOLLOW -->
     <fragment
         android:id="@+id/followListFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.FollowListFragment"
+        android:name="com.uni_project.questmaster.ui.utils.FollowListFragment"
         android:label="fragment_follow_list"
         tools:layout="@layout/fragment_follow_list" >
         <action
@@ -135,7 +139,7 @@
     <!-- LOCATION SELECTION -->
     <fragment
         android:id="@+id/locationSelectionFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.LocationSelectionFragment"
+        android:name="com.uni_project.questmaster.ui.utils.LocationSelectionFragment"
         android:label="fragment_location_selection"
         tools:layout="@layout/fragment_location_selection" />
 

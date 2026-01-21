@@ -1,11 +1,19 @@
 package com.uni_project.questmaster.model;
 
+import java.util.List;
+
 public class User {
     private String uid;
     private String username;
     private String email;
     private String avatarUrl;
     private long ppq;
+    private List<String> completedQuests;
+    private List<String> savedQuests;
+    private long totalPoints;
+    private String description;
+    private String profileImageUrl;
+
 
     public User() {}
 
@@ -55,5 +63,45 @@ public class User {
 
     public void setPpq(long ppq) {
         this.ppq = ppq;
+    }
+
+    public List<String> getCompletedQuests() {
+        return completedQuests;
+    }
+
+    public void setCompletedQuests(List<String> completedQuests) {
+        this.completedQuests = completedQuests;
+    }
+
+    public List<String> getSavedQuests() {
+        return savedQuests;
+    }
+
+    public void setSavedQuests(List<String> savedQuests) {
+        this.savedQuests = savedQuests;
+    }
+
+    public long getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(long totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

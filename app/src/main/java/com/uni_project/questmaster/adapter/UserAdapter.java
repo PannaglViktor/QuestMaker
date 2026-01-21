@@ -3,6 +3,7 @@ package com.uni_project.questmaster.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.uni_project.questmaster.R;
 import com.uni_project.questmaster.model.User;
-import com.uni_project.questmaster.ui.home.fragments.ProfileFragment;
+import com.uni_project.questmaster.ui.utils.ProfileFragment;
 
 import java.util.List;
 
@@ -45,9 +46,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
         holder.username.setText(user.getUsername());
 
-
+        String imageUrl = user.getProfileImageUrl();
+        if (TextUtils.isEmpty(imageUrl)) {
+            imageUrl = user.getAvatarUrl();
+        }
+        //GLIDE
         Glide.with(context)
-                .load(user.getAvatarUrl())
+                .load(imageUrl)
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(holder.profileImage);
@@ -67,7 +72,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         return userList.size();
     }
 
-    // ViewHolder class
+    // VIEWHOLDER
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView profileImage;
         TextView username;
@@ -75,7 +80,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             // Ensure these IDs match your R.layout.item_user
-            profileImage = itemView.findViewById(R.id.profileImage);
+            profileImage = itemView.findViewById(R.id.userProfileImage);
             username = itemView.findViewById(R.id.username);
         }
     }

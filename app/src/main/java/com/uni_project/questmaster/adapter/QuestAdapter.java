@@ -75,6 +75,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
     }
 
     public static class QuestViewHolder extends RecyclerView.ViewHolder {
+        private final TextView questNameTextView;
         private final TextView usernameTextView;
         private final TextView dateTextView;
         private final TextView descriptionTextView;
@@ -83,6 +84,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
 
         public QuestViewHolder(@NonNull View itemView) {
             super(itemView);
+            questNameTextView = itemView.findViewById(R.id.questNameTextView);
             usernameTextView = itemView.findViewById(R.id.usernameTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
@@ -91,6 +93,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
         }
 
         public void bind(Quest quest, Context context, FirebaseFirestore db) {
+            questNameTextView.setText(quest.getTitle());
             usernameTextView.setText(quest.getOwnerName());
             descriptionTextView.setText(quest.getDescription());
 
@@ -102,7 +105,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
                                 usernameTextView.setText(username);
                             } else {
                                 Log.w("QuestAdapter", "User not found with ID: " + quest.getOwnerId());
-                                usernameTextView.setText("Unknown User");
+                                usernameTextView.setText(quest.getOwnerName());
                             }
                         })
                         .addOnFailureListener(e -> {
@@ -217,7 +220,7 @@ public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHol
 
             public ImageViewHolder(@NonNull View itemView) {
                 super(itemView);
-                imageView = itemView.findViewById(R.id.sliderImageView);
+                imageView = itemView.findViewById(R.id.image_view);
             }
         }
     }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,12 +20,14 @@
             android:layout_height="wrap_content"
             android:paddingBottom="24dp">
 
-            <ImageView
-                android:id="@+id/image_view_quest_media"
-                android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_quest_media"
+                android:layout_width="match_parent"
                 android:layout_height="250dp"
+                android:orientation="horizontal"
                 android:contentDescription="@string/quest_map_or_images"
                 android:scaleType="centerCrop"
+                android:background="@color/l_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +45,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/button_star"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image_view_quest_media"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_quest_media"
                 tools:text="The Lost Artifact of the Ancients" />
 
 
@@ -109,6 +112,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_view_creator_avatar">
 
+                <!-- MUST IMPLEMENT
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_tags"
                     android:layout_width="wrap_content"
@@ -149,7 +153,7 @@
                         android:text="Pub crawl" />
 
                 </com.google.android.material.chip.ChipGroup>
-
+-->
             </HorizontalScrollView>
 
 
@@ -161,13 +165,45 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:lineSpacingExtra="4dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/l_text"
                 android:textColor="@color/d_text"
                 android:textSize="16sp"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_tags"
                 tools:text="An ancient legend speaks of a treasure hidden in the heart of the city. Only the bravest will decipher the clues and find it." />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_complete_quest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/complete_quest"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_quest_description" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_delete_quest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/delete_quest"
+                android:visibility="gone"
+                app:backgroundTint="?attr/colorError"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_quest_description"
+                tools:visibility="visible" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/buttons_barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="button_complete_quest,button_delete_quest" />
 
             <TextView
                 android:id="@+id/text_view_comments_header"
@@ -180,15 +216,16 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_view_quest_description" />
-
+                app:layout_constraintTop_toBottomOf="@id/buttons_barrier" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_comments"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true"
+                android:nestedScrollingEnabled="false"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/l_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text_view_comments_header"
@@ -214,6 +251,9 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/add_a_comment"
+                android:background="@drawable/rounded_rectangle"
+                android:padding="4dp"
+                android:backgroundTint="@color/l_text"
                 app:layout_constraintEnd_toStartOf="@id/button_post_comment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_view_comments">

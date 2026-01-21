@@ -1,4 +1,4 @@
-package com.uni_project.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.utils;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation; // Use the static Navigation finder
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,7 +103,7 @@ public class FollowListFragment extends Fragment {
                                     if (userDocument.exists()) {
                                         User user = userDocument.toObject(User.class);
                                         if (user != null) {
-                                            user.setUid(userDocument.getId()); // Make sure UID is set
+                                            user.setUid(userDocument.getId());
                                             userList.add(user);
                                             adapter.notifyDataSetChanged();
                                         }

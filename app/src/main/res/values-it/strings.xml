@@ -1,0 +1,87 @@
+<resources>
+    <string name="app_name" translatable="false">QuestMaster</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="profile">Profilo</string>
+    <string name="make_a_quest">Crea una missione</string>
+
+    <string name="button">pulsante</string>
+    <string name="menu_button">stato pulsante menu</string>
+    <string name="follow">Segui</string>
+    <string name="unfollow">Smetti di seguire</string>
+    <string name="user_description">Descrizione utente</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="create_quest">Crea missione</string>
+    <string name="menu_icon">Icona menu</string>
+    <string name="email" translatable="false">e-mail</string>
+    <string name="password" translatable="false">password</string>
+    <string name="login" translatable="false">login</string>
+    <string name="i_forgot_my_password">Ho dimenticato la password</string>
+    <string name="login_with_google">Accedi con Google</string>
+    <string name="or">O</string>
+    <string name="check_email">Controlla la tua email</string>
+    <string name="check_password">Controlla la tua password</string>
+    <string name="passwords_do_not_match">le password non corrispondono</string>
+    <string name="username_is_required">il nome utente è obbligatorio</string>
+    <string name="confirm_password">conferma password</string>
+    <string name="signup">Registrati</string>
+    <string name="login_image">immagine di login</string>
+    <string name="app_sign_up">QuestMaster - Registrati</string>
+    <string name="password_requirements">La password deve contenere almeno 7 caratteri,
+                                    una lettera minuscola, una maiuscola
+                                    e un numero</string>
+
+
+    <string name="quest_name">Nome missione</string>
+    <string name="quest_description">Descrizione missione</string>
+    <string name="points_per_quest" translatable="false">Punti per missione</string>
+    <string name="map_preview">Anteprima mappa</string>
+    <string name="save">Salva</string>
+    <string name="welcome_back_adventurer">Bentornato avventuriero!</string>
+    <string name="do_you_already_have_an_account">hai già un account?</string>
+    <string name="add_a_comment">aggiungi un commento</string>
+    <string name="comments">Commenti</string>
+    <string name="post">pubblica</string>
+    <string name="share_button">pulsante condividi</string>
+    <string name="star_button">pulsante stella</string>
+    <string name="quest_map_or_images">mappa o immagini della missione</string>
+
+    <string name="settings">Impostazioni</string>
+    <string name="appearance">Aspetto</string>
+    <string name="dark_mode" translatable="false">Modalità scura</string>
+    <string name="language">Lingua</string>
+    <string name="localization">Localizzazione</string>
+    <string name="country_region_city">Paese/Regione/Città</string>
+    <string name="notifications">Notifiche</string>
+    <string name="new_quest_alerts">Avvisi nuove missioni</string>
+    <string name="comment_notifications">Notifiche commenti</string>
+    <string name="about">Informazioni</string>
+    <string name="app_info" translatable="false">Informazioni sull\'app</string>
+    <string name="no_internet_connection">Nessuna connessione internet disponibile</string>
+    <string name="quest_image_map">immagine/mappa della missione</string>
+    <string name="edit_username">modifica nome utente</string>
+    <string name="edit_description">modifica descrizione</string>
+    <string name="saved_quests">Missioni salvate</string>
+    <string name="error_user_not_found">ERRORE! utente non trovato</string>
+    <string name="error_invalid_credentials">ERRORE! Credenziali non valide</string>
+    <string name="authentication_failed">ERRORE! Autenticazione fallita</string>
+    <string name="title_home" translatable="false">HOME</string>
+    <string name="i_have_to_signup">Devo registrarmi</string>
+    <string name="following">Seguiti</string>
+    <string name="followers">Seguaci</string>
+    <string name="logout">Esci</string>
+    <string name="google_sign_in_failed">Accesso con Google fallito</string>
+    <string name="your_score">Il tuo punteggio</string>
+    <string name="ppq" translatable="false">PPQ</string>
+    <string name="score">"Punteggio: "</string>
+    <string name="complete_quest">Completa missione</string>
+    <string name="delete_image">Elimina immagine</string>
+    <string name="scroll_images">scorri immagini</string>
+    <string name="starting_point">Punto di partenza</string>
+    <string name="search">Cerca</string>
+    <string name="ending_point">Punto di arrivo</string>
+    <string name="location">Posizione</string>
+    <string name="image_visualizer">visualizzatore di immagini</string>
+    <string name="delete_quest">Elimina missione</string>
+    <string name="_0" translatable="false">0</string>
+
+</resources>

@@ -1,4 +1,4 @@
-package com.uni_project.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.uni_project.questmaster.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

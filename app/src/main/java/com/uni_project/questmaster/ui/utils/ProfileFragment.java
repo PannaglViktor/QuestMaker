@@ -1,4 +1,4 @@
-package com.uni_project.questmaster.ui.home.fragments;
+package com.uni_project.questmaster.ui.utils;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -16,14 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.uni_project.questmaster.R;
@@ -48,6 +47,8 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
 
+    private ListenerRegistration followersListener, followingListener, followingCheckListener;
+
     public ProfileFragment() {
     }
 
@@ -71,8 +72,10 @@ public class ProfileFragment extends Fragment {
             currentUserId = currentUser.getUid();
         }
 
-        if (getArguments() != null) {
+        if (getArguments() != null && getArguments().containsKey(ARG_USER_ID)) {
             userId = getArguments().getString(ARG_USER_ID);
+        } else {
+            userId = currentUserId;
         }
     }
 
@@ -98,7 +101,6 @@ public class ProfileFragment extends Fragment {
 
 
         if (userId != null) {
-            // Hide follow button if viewing own profile
             if (userId.equals(currentUserId)) {
                 followButton.setVisibility(View.GONE);
             } else {
@@ -107,11 +109,19 @@ public class ProfileFragment extends Fragment {
                 followButton.setOnClickListener(v -> toggleFollow());
             }
             loadUserProfile();
-            loadCounts();
+            attachCountListeners(); // Real-time counts
             setupClickListeners();
         } else {
             Log.e(TAG, "User ID is null.");
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (followersListener != null) followersListener.remove();
+        if (followingListener != null) followingListener.remove();
+        if (followingCheckListener != null) followingCheckListener.remove();
     }
 
     private void loadUserProfile() {
@@ -123,21 +133,20 @@ public class ProfileFragment extends Fragment {
                     profileName.setText(document.getString("username"));
                     profileDescription.setText(document.getString("description"));
 
-                    if (document.contains("score")) {
-                        profileScore.setText(String.format("Score: %d", document.getLong("score")));
+                    if (document.contains("totalPoints")) {
+                        profileScore.setText(String.format("Score: %d", document.getLong("totalPoints")));
                     } else {
                         profileScore.setText("Score: 0");
                     }
 
-                    // Glide image
                     if (document.contains("profileImageUrl")) {
                         String imageUrl = document.getString("profileImageUrl");
                         if (imageUrl != null && !imageUrl.isEmpty()) {
                             StorageReference imageRef = storage.getReferenceFromUrl(imageUrl);
                             Glide.with(this)
                                     .load(imageRef)
-                                    .placeholder(R.drawable.ic_launcher_foreground) // Immagine segnaposto
-                                    .error(R.drawable.ic_launcher_foreground) // Immagine di errore
+                                    .placeholder(R.drawable.ic_launcher_foreground)
+                                    .error(R.drawable.ic_launcher_foreground)
                                     .into(profileImage);
                         }
                     }
@@ -153,16 +162,28 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void loadCounts() {
-        // Followers
-        db.collection("users").document(userId).collection("followers")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> followersCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+    private void attachCountListeners() {
+        followersListener = db.collection("users").document(userId).collection("followers")
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    if (snapshots != null) {
+                        followersCount.setText(String.valueOf(snapshots.size()));
+                    }
+                });
 
-        // Following
-        db.collection("users").document(userId).collection("following")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> followingCount.setText(String.valueOf(queryDocumentSnapshots.size())));
+        followingListener = db.collection("users").document(userId).collection("following")
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    if (snapshots != null) {
+                        followingCount.setText(String.valueOf(snapshots.size()));
+                    }
+                });
     }
 
     private void setupClickListeners() {
@@ -182,8 +203,12 @@ public class ProfileFragment extends Fragment {
         DocumentReference followingRef = db.collection("users").document(currentUserId)
                 .collection("following").document(userId);
 
-        followingRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult().exists()) {
+        followingCheckListener = followingRef.addSnapshotListener((snapshot, e) -> {
+            if (e != null) {
+                Log.w(TAG, "Listen failed.", e);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
                 followButton.setText(R.string.following);
             } else {
                 followButton.setText(R.string.follow);
@@ -206,22 +231,14 @@ public class ProfileFragment extends Fragment {
             if (task.isSuccessful()) {
                 if (task.getResult().exists()) {
                     // Unfollow
-                    followingRef.delete().addOnSuccessListener(aVoid -> {
-                        followerRef.delete().addOnSuccessListener(aVoid1 -> {
-                            loadCounts();
-                            followButton.setText(R.string.follow);
-                        });
-                    });
+                    followingRef.delete();
+                    followerRef.delete();
                 } else {
                     // Follow
                     Map<String, Object> data = new HashMap<>();
                     data.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
-                    followingRef.set(data).addOnSuccessListener(aVoid -> {
-                        followerRef.set(data).addOnSuccessListener(aVoid1 -> {
-                            loadCounts();
-                            followButton.setText(R.string.following);
-                        });
-                    });
+                    followingRef.set(data);
+                    followerRef.set(data);
                 }
             } else {
                 Log.e(TAG, "Error checking following status", task.getException());

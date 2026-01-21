@@ -131,8 +131,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showLanguageSelectionDialog() {
-        final String[] languages = {"English", "Spanish", "French", "German"}; // Add more languages as needed
-        final String[] languageCodes = {"en", "es", "fr", "de"};
+        final String[] languages = {"English", "Italiano", "Francaise", "Deutsch"};
+        final String[] languageCodes = {"en", "it", "fr", "de"};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Select Language")
                 .setItems(languages, (dialog, which) -> {
