@@ -30,29 +30,6 @@ public class Quest {
     public Quest() {
     }
 
-    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, long ppq) {
-        this.title = title;
-        this.description = description;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
-        this.imageUrls = imageUrls;
-        this.savedBy = savedBy;
-        this.ppq = ppq;
-    }
-
-    public Quest(String title, String description, String ownerId, String ownerName, List<String> imageUrls, List<String> savedBy, QuestLocation startPoint, QuestLocation endPoint, QuestLocation location, long ppq) {
-        this.title = title;
-        this.description = description;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
-        this.imageUrls = imageUrls;
-        this.savedBy = savedBy;
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.location = location;
-        this.ppq = ppq;
-    }
-
     public String getId() {
         return id;
     }

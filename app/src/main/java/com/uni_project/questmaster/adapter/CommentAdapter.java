@@ -55,11 +55,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public int getItemCount() {
         return commentList.size();
     }
-    public void addComment(Comment comment) {
-        commentList.add(comment);
-        notifyItemInserted(commentList.size() - 1);
-    }
 
+    public void updateComments(List<Comment> newComments) {
+        commentList.clear();
+        if (newComments != null) {
+            commentList.addAll(newComments);
+        }
+        notifyDataSetChanged();
+    }
 
     static class CommentViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView avatarImageView;

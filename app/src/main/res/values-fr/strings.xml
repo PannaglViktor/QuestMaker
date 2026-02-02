@@ -67,4 +67,9 @@
     <string name="location">Emplacement</string>
     <string name="image_visualizer">visualiseur d\'images</string>
     <string name="delete_quest">Supprimer la quête</string>
+    <string name="privacy">Confidentialité</string>
+    <string name="clear_search_history">Effacer l\'historique de recherche</string>
+    <string name="clear_search_history_dialog_message">Êtes-vous sûr de vouloir effacer votre historique de recherche ?</string>
+    <string name="history_cleared">Historique de recherche effacé</string>
+    <string name="cancel">Annuler</string>
 </resources>

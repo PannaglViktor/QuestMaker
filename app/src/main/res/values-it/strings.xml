@@ -83,5 +83,10 @@
     <string name="image_visualizer">visualizzatore di immagini</string>
     <string name="delete_quest">Elimina missione</string>
     <string name="_0" translatable="false">0</string>
+    <string name="privacy">Privacy</string>
+    <string name="clear_search_history">Cancella cronologia ricerche</string>
+    <string name="clear_search_history_dialog_message">Sei sicuro di voler cancellare la cronologia delle ricerche?</string>
+    <string name="history_cleared">Cronologia ricerche cancellata</string>
+    <string name="cancel">Annulla</string>
 
 </resources>

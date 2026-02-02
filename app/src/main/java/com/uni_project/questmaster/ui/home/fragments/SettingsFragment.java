@@ -29,7 +29,7 @@ import java.util.Locale;
 public class SettingsFragment extends Fragment {
 
     private MaterialSwitch switchDarkMode, switchNotificationsNewQuests, switchNotificationsComments;
-    private LinearLayout settingLanguage, settingLocation, settingAppInfo;
+    private LinearLayout settingLanguage, settingLocation, settingAppInfo, settingClearSearchHistory;
     private TextView textViewCurrentLanguage, textViewCurrentLocation, textViewAppVersion;
     private SharedPreferences sharedPreferences;
 
@@ -59,6 +59,7 @@ public class SettingsFragment extends Fragment {
         settingLanguage = view.findViewById(R.id.setting_language);
         settingLocation = view.findViewById(R.id.setting_location);
         settingAppInfo = view.findViewById(R.id.setting_app_info);
+        settingClearSearchHistory = view.findViewById(R.id.setting_clear_search_history);
 
         // TextViews
         textViewCurrentLanguage = view.findViewById(R.id.text_view_current_language);
@@ -69,6 +70,7 @@ public class SettingsFragment extends Fragment {
     private void setupClickListeners() {
         // Dark Mode
         switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            sharedPreferences.edit().putBoolean("dark_mode", isChecked).apply();
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
@@ -96,14 +98,20 @@ public class SettingsFragment extends Fragment {
 
         // App Info
         settingAppInfo.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Showing app info...", Toast.LENGTH_SHORT).show();
+            showAppInfoDialog();
+        });
+
+        // Clear Search History
+        settingClearSearchHistory.setOnClickListener(v -> {
+            showClearSearchHistoryDialog();
         });
     }
 
     private void loadCurrentSettings() {
         // Dark Mode state
-        int currentNightMode = getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK;
-        switchDarkMode.setChecked(currentNightMode == android.content.res.Configuration.UI_MODE_NIGHT_YES);
+        boolean isDarkMode = sharedPreferences.getBoolean("dark_mode",
+                (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES);
+        switchDarkMode.setChecked(isDarkMode);
 
         // Load saved language
         String language = sharedPreferences.getString("My_Lang", "en");
@@ -131,14 +139,46 @@ public class SettingsFragment extends Fragment {
     }
 
     private void showLanguageSelectionDialog() {
-        final String[] languages = {"English", "Italiano", "Francaise", "Deutsch"};
-        final String[] languageCodes = {"en", "it", "fr", "de"};
+        final String[] languages = {"English", "Italiano", "Française", "Deutsch", "Español"};
+        final String[] languageCodes = {"en", "it", "fr", "de", "es"};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Select Language")
                 .setItems(languages, (dialog, which) -> {
                     setLocale(languageCodes[which]);
                 });
         builder.create().show();
+    }
+
+    private void showAppInfoDialog() {
+        String versionName = "";
+        try {
+            PackageInfo pInfo = requireActivity().getPackageManager().getPackageInfo(requireActivity().getPackageName(), 0);
+            versionName = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.app_info)
+                .setMessage("Version " + versionName)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+    }
+
+    private void showClearSearchHistoryDialog() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.clear_search_history)
+                .setMessage(R.string.clear_search_history_dialog_message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    clearSearchHistory();
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void clearSearchHistory() {
+        SharedPreferences searchHistoryPrefs = requireActivity().getSharedPreferences("SearchHistory", Context.MODE_PRIVATE);
+        searchHistoryPrefs.edit().clear().apply();
+        Toast.makeText(requireContext(), getString(R.string.history_cleared), Toast.LENGTH_SHORT).show();
     }
 
     private void setLocale(String languageCode) {

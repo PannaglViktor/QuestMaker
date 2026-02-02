@@ -1,3 +1,4 @@
+
 package com.uni_project.questmaster.ui.start.fragments;
 
 import android.content.Intent;
@@ -15,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,13 +27,9 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.uni_project.questmaster.R;
-import com.uni_project.questmaster.model.User;
+import com.uni_project.questmaster.ui.start.viewmodel.SignupViewModel;
+import com.uni_project.questmaster.ui.start.viewmodel.SignupViewModelFactory;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -40,8 +38,7 @@ import java.util.regex.Pattern;
 
 public class SignupFragment extends Fragment {
     private static final String TAG = "SignupFragment";
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private SignupViewModel viewModel;
     private GoogleSignInClient mGoogleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
 
@@ -50,8 +47,8 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        SignupViewModelFactory factory = new SignupViewModelFactory(requireActivity().getApplication());
+        viewModel = new ViewModelProvider(this, factory).get(SignupViewModel.class);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -65,12 +62,23 @@ public class SignupFragment extends Fragment {
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                     try {
                         GoogleSignInAccount account = task.getResult(ApiException.class);
-                        firebaseAuthWithGoogle(account);
+                        viewModel.signupWithGoogle(account);
                     } catch (ApiException e) {
                         Log.w(TAG, "Google sign in failed", e);
                         Snackbar.make(requireView(), R.string.google_sign_in_failed, Snackbar.LENGTH_SHORT).show();
                     }
                 });
+
+        viewModel.signupResult.observe(this, authResult -> {
+            if (authResult != null) {
+                Log.d(TAG, "signup:success");
+                Toast.makeText(getActivity(), "Account successfully created", Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(requireView()).navigate(R.id.action_signupFragment_to_homeActivity);
+            } else {
+                Log.w(TAG, "signup:failure");
+                Snackbar.make(requireView(), "Authentication failed", Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -109,7 +117,7 @@ public class SignupFragment extends Fragment {
             String confirmPassword = inputConfirmPassword.getText().toString();
 
             if (validateInput(username, email, password, confirmPassword)) {
-                registerUser(email, password, username, view);
+                viewModel.signup(email, password, username);
             }
         });
 
@@ -117,39 +125,6 @@ public class SignupFragment extends Fragment {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             googleSignInLauncher.launch(signInIntent);
         });
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            String uid = firebaseUser.getUid();
-                            String email = firebaseUser.getEmail();
-                            String username = firebaseUser.getDisplayName();
-
-                            User user = new User(uid, username, email);
-
-                            db.collection("users").document(uid).set(user)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "User profile created for " + uid);
-                                        Toast.makeText(getActivity(), "Account successfully created with Google", Toast.LENGTH_SHORT).show();
-                                        Navigation.findNavController(requireView()).navigate(R.id.action_signupFragment_to_homeActivity);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.w(TAG, "Error writing document", e);
-                                        Snackbar.make(requireView(), "Error saving user data.", Snackbar.LENGTH_LONG).show();
-                                    });
-                        }
-                    } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Snackbar.make(requireView(), R.string.authentication_failed, Snackbar.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     private boolean validateInput(String username, String email, String password, String confirmPassword) {
@@ -196,34 +171,4 @@ public class SignupFragment extends Fragment {
         Matcher m = p.matcher(password);
         return m.matches() && password.length() >= 6;
     }
-
-    private void registerUser(String email, String password, String username, View view) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            String uid = firebaseUser.getUid();
-                            User user = new User(uid, username, email);
-
-                            db.collection("users").document(uid)
-                                    .set(user)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Log.d(TAG, "User profile is created for " + uid);
-                                        Toast.makeText(getActivity(),"Account successfully created",Toast.LENGTH_SHORT).show();
-                                        Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homeActivity);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.w(TAG, "Error writing document", e);
-                                        Toast.makeText(getActivity(),"Failed to create account",Toast.LENGTH_SHORT).show();
-                                        Snackbar.make(view, "Error saving user data.", Snackbar.LENGTH_LONG).show();
-                                    });
-                        }
-                    } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Snackbar.make(view, "Authentication failed: " + task.getException().getMessage(), Snackbar.LENGTH_LONG).show();
-                    }
-                });
-    }
-
 }

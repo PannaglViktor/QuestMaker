@@ -142,6 +142,41 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- PRIVACY -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    style="@style/SettingsSectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy" />
+
+                <LinearLayout
+                    android:id="@+id/setting_clear_search_history"
+                    style="@style/SettingsRow.Clickable">
+
+                    <ImageView
+                        style="@style/SettingsIcon"
+                        android:src="@drawable/ic_history"
+                        android:contentDescription="@string/clear_search_history" />
+
+                    <TextView
+                        style="@style/SettingsItemText"
+                        android:text="@string/clear_search_history" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- APP INFO -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

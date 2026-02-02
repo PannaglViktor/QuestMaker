@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,10 +7,18 @@
     android:id="@+id/feedFragment"
     tools:context=".ui.home.fragments.FeedFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        app:queryHint="@string/search" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_feed"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/search_view"
         android:clipToPadding="false"
         android:paddingVertical="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -20,9 +28,17 @@
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:layout_width="wrap_content"
         android:id="@+id/loadingIndicator"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:visibility="visible"
         android:layout_height="wrap_content"
         app:indicatorColor="@color/d_palette"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/no_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/no_internet_connection"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,99 +1,87 @@
 package com.uni_project.questmaster.ui.utils;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.uni_project.questmaster.R;
 
-import java.util.Arrays;
-import java.util.List;
+public class LocationSelectionFragment extends Fragment implements OnMapReadyCallback {
 
-public class LocationSelectionFragment extends Fragment {
-
-    private RecyclerView recyclerViewCountries;
+    private MapView mapView;
+    private GoogleMap googleMap;
+    private Button buttonConfirmLocation;
+    private LatLng selectedLocation;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_location_selection, container, false);
+        View view = inflater.inflate(R.layout.fragment_location_selection, container, false);
+        mapView = view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        recyclerViewCountries = view.findViewById(R.id.recycler_view_countries);
-        recyclerViewCountries.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        List<String> countries = Arrays.asList("United Kingdom", "United States", "Canada", "Australia", "Germany", "France", "Spain", "Italy", "Japan", "China");
-
-        CountryAdapter adapter = new CountryAdapter(countries, country -> {
-            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("My_Location", country);
-            editor.apply();
-            NavHostFragment.findNavController(this).navigateUp();
+        buttonConfirmLocation = view.findViewById(R.id.button_confirm_location);
+        buttonConfirmLocation.setOnClickListener(v -> {
+            if (selectedLocation != null) {
+                Bundle result = new Bundle();
+                result.putParcelable("selectedLocation", selectedLocation);
+                getParentFragmentManager().setFragmentResult("locationRequest", result);
+                NavHostFragment.findNavController(this).popBackStack();
+            }
         });
-
-        recyclerViewCountries.setAdapter(adapter);
     }
 
-    static class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryViewHolder> {
+    @Override
+    public void onMapReady(@NonNull GoogleMap map) {
+        googleMap = map;
+        googleMap.setOnMapClickListener(latLng -> {
+            selectedLocation = latLng;
+            googleMap.clear();
+            googleMap.addMarker(new MarkerOptions().position(latLng));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        });
+    }
 
-        private final List<String> countries;
-        private final OnCountrySelectedListener listener;
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
 
-        public CountryAdapter(List<String> countries, OnCountrySelectedListener listener) {
-            this.countries = countries;
-            this.listener = listener;
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
 
-        @NonNull
-        @Override
-        public CountryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
-            return new CountryViewHolder(view);
-        }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
 
-        @Override
-        public void onBindViewHolder(@NonNull CountryViewHolder holder, int position) {
-            String country = countries.get(position);
-            holder.bind(country, listener);
-        }
-
-        @Override
-        public int getItemCount() {
-            return countries.size();
-        }
-
-        static class CountryViewHolder extends RecyclerView.ViewHolder {
-            private final TextView textView;
-
-            public CountryViewHolder(@NonNull View itemView) {
-                super(itemView);
-                textView = itemView.findViewById(android.R.id.text1);
-            }
-
-            public void bind(final String country, final OnCountrySelectedListener listener) {
-                textView.setText(country);
-                itemView.setOnClickListener(v -> listener.onCountrySelected(country));
-            }
-        }
-
-        interface OnCountrySelectedListener {
-            void onCountrySelected(String country);
-        }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

@@ -83,5 +83,10 @@
     <string name="image_visualizer">image visualizer</string>
     <string name="delete_quest">Delete Quest</string>
     <string name="_0" translatable="false">0</string>
+    <string name="privacy">Privacy</string>
+    <string name="clear_search_history">Clear search history</string>
+    <string name="clear_search_history_dialog_message">Are you sure you want to clear your search history?</string>
+    <string name="history_cleared">Search history cleared</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

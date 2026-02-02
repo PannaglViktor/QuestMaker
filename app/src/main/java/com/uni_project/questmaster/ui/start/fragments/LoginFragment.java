@@ -1,4 +1,7 @@
-package com.uni_project.questmaster.ui.start.fragments;import android.content.Intent;
+
+package com.uni_project.questmaster.ui.start.fragments;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -23,23 +27,19 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.uni_project.questmaster.R;
+import com.uni_project.questmaster.ui.start.viewmodel.LoginViewModel;
+import com.uni_project.questmaster.ui.start.viewmodel.LoginViewModelFactory;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
 public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
-    private FirebaseAuth mAuth;
     private NavController navController;
     private GoogleSignInClient mGoogleSignInClient;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
+    private LoginViewModel viewModel;
 
     private TextInputEditText inputEmail;
     private TextInputEditText inputPassword;
@@ -51,7 +51,9 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        LoginViewModelFactory factory = new LoginViewModelFactory(requireActivity().getApplication());
+        viewModel = new ViewModelProvider(this, factory).get(LoginViewModel.class);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -64,21 +66,29 @@ public class LoginFragment extends Fragment {
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                     try {
                         GoogleSignInAccount account = task.getResult(ApiException.class);
-                        firebaseAuthWithGoogle(account);
+                        viewModel.loginWithGoogle(account);
                     } catch (ApiException e) {
                         Log.w(TAG, "Google sign in failed", e);
                         Snackbar.make(requireView(), R.string.google_sign_in_failed, Snackbar.LENGTH_SHORT).show();
                     }
                 });
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            navigateToHome();
-        }
+        viewModel.isLoggedIn.observe(this, isLoggedIn -> {
+            if (isLoggedIn) {
+                navigateToHome();
+            }
+        });
+
+        viewModel.loginResult.observe(this, authResult -> {
+            if (authResult != null) {
+                Log.d(TAG, "signIn:success");
+                Toast.makeText(getActivity(), "You're logged in", Toast.LENGTH_LONG).show();
+                navigateToHome();
+            } else {
+                Log.w(TAG, "signIn:failure");
+                Snackbar.make(requireView(), R.string.authentication_failed, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -105,7 +115,7 @@ public class LoginFragment extends Fragment {
             Log.d(TAG, "Login attempt with email: [" + email + "], password: [" + password + "]");
 
             if (isEmailOk(email) && isPasswordOk(password)) {
-                loginUserWithFirebase(email, password, view);
+                viewModel.login(email, password);
             } else if (!isEmailOk(email)) {
                 inputEmail.setError(getString(R.string.check_email));
                 Snackbar.make(view, R.string.check_email, Snackbar.LENGTH_SHORT).show();
@@ -124,52 +134,6 @@ public class LoginFragment extends Fragment {
             googleSignInLauncher.launch(signInIntent);
         });
     }
-
-    private void loginUserWithFirebase(String email, String password, View view) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithEmail:success");
-                        Toast.makeText(getActivity(), "You're logged in", Toast.LENGTH_LONG).show();
-                        navigateToHome();
-                    } else {
-                        Log.w(TAG, "signInWithEmail:failure", task.getException());
-                        handleLoginFailure(task.getException(), view);
-                    }
-                });
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithCredential:success");
-                        Toast.makeText(getActivity(), "You're logged in with Google", Toast.LENGTH_LONG).show();
-                        navigateToHome();
-                    } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Snackbar.make(requireView(), R.string.authentication_failed, Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void handleLoginFailure(Exception exception, View view) {
-        String errorMessage;
-        if (exception instanceof FirebaseAuthInvalidUserException) {
-            errorMessage = getString(R.string.error_user_not_found);
-            inputEmail.setError(errorMessage);
-        } else if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-            errorMessage = getString(R.string.error_invalid_credentials);
-            inputPassword.setError(errorMessage);
-        } else {
-            errorMessage = getString(R.string.authentication_failed);
-        }
-        Snackbar.make(view, errorMessage, Snackbar.LENGTH_LONG).show();
-    }
-
 
     private void navigateToHome() {
         if (navController != null) {

@@ -9,7 +9,7 @@
 
 
     <application
-        android:name=".ui.utils.MyApplication"
+        android:name=".QuestMasterApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"

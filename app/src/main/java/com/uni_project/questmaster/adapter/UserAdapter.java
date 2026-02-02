@@ -7,12 +7,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.uni_project.questmaster.R;
 import com.uni_project.questmaster.model.User;
 import com.uni_project.questmaster.ui.utils.ProfileFragment;
@@ -36,7 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_user, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.card_user, parent, false);
         return new UserViewHolder(view);
     }
 
@@ -74,14 +74,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     // VIEWHOLDER
     public static class UserViewHolder extends RecyclerView.ViewHolder {
-        ShapeableImageView profileImage;
+        ImageView profileImage;
         TextView username;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Ensure these IDs match your R.layout.item_user
-            profileImage = itemView.findViewById(R.id.userProfileImage);
-            username = itemView.findViewById(R.id.username);
+            // Ensure these IDs match your R.layout.card_user
+            profileImage = itemView.findViewById(R.id.user_profile_image);
+            username = itemView.findViewById(R.id.user_name);
         }
     }
 }

@@ -15,8 +15,8 @@
             android:id="@+id/action_feedFragment_to_questViewFragment"
             app:destination="@id/questViewFragment" />
         <action
-            android:id="@+id/action_feedFragment_to_makeQuestFragment"
-            app:destination="@id/makeQuestFragment" />
+            android:id="@+id/action_feedFragment_to_createQuestFragment"
+            app:destination="@id/createQuestFragment" />
         <action
             android:id="@+id/action_feedFragment_to_personalProfileFragment"
             app:destination="@id/personalProfileFragment" />
@@ -25,21 +25,24 @@
             app:destination="@id/settingsFragment" />
     </fragment>
 
-    <!-- MAKE QUEST -->
+    <!-- CREATE QUEST -->
     <fragment
-        android:id="@+id/makeQuestFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.QuestCreateFragment"
-        android:label="fragment_quest_create"
-        tools:layout="@layout/fragment_quest_create" >
+        android:id="@+id/createQuestFragment"
+        android:name="com.uni_project.questmaster.ui.quest.CreateQuestFragment"
+        android:label="fragment_create_quest"
+        tools:layout="@layout/fragment_create_quest" >
         <action
-            android:id="@+id/action_makeQuestFragment_to_feedFragment"
+            android:id="@+id/action_createQuestFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
         <action
-            android:id="@+id/action_makeQuestFragment_to_personalProfileFragment"
+            android:id="@+id/action_createQuestFragment_to_personalProfileFragment"
             app:destination="@id/personalProfileFragment" />
         <action
-            android:id="@+id/action_makeQuestFragment_to_settingsFragment"
+            android:id="@+id/action_createQuestFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_createQuestFragment_to_locationSelectionFragment"
+            app:destination="@id/locationSelectionFragment" />
     </fragment>
 
     <!-- PERSONAL PROFILE -->
@@ -58,8 +61,8 @@
             android:id="@+id/action_personalProfileFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
         <action
-            android:id="@+id/action_personalProfileFragment_to_makeQuestFragment"
-            app:destination="@id/makeQuestFragment" />
+            android:id="@+id/action_personalProfileFragment_to_createQuestFragment"
+            app:destination="@id/createQuestFragment" />
         <action
             android:id="@+id/action_personalProfileFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -75,8 +78,8 @@
             android:id="@+id/action_settingsFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
         <action
-            android:id="@+id/action_settingsFragment_to_makeQuestFragment"
-            app:destination="@id/makeQuestFragment" />
+            android:id="@+id/action_settingsFragment_to_createQuestFragment"
+            app:destination="@id/createQuestFragment" />
         <action
             android:id="@+id/action_settingsFragment_to_personalProfileFragment"
             app:destination="@id/personalProfileFragment" />
@@ -88,7 +91,7 @@
     <!-- QUEST VIEW -->
     <fragment
         android:id="@+id/questViewFragment"
-        android:name="com.uni_project.questmaster.ui.quest.QuestViewFragment"
+        android.name="com.uni_project.questmaster.ui.quest.QuestViewFragment"
         android:label="QuestViewFragment"
         tools:layout="@layout/fragment_quest_view">
         <argument
