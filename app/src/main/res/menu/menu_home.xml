@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/feedFragment"
+        android:id="@+id/homeFragment"
         android:title="@string/home"
-        android:tint="?attr/colorControlNormal"
-        android:icon="@mipmap/ic_home_icon_foreground"
+        android:icon="@drawable/home_menu_icon"
         />
 
     <item
         android:id="@+id/makeQuestFragment"
         android:title="@string/make_a_quest"
-        android:tint="?attr/colorControlNormal"
-        android:icon="@mipmap/ic_quest_icon_foreground"
+        android:icon="@drawable/quest_icon"
         />
 
     <item
-        android:id="@+id/personalProfileFragment"
+        android:id="@+id/profileFragment"
         android:title="@string/profile"
-        android:tint="?attr/colorControlNormal"
-        android:icon="@mipmap/ic_user_icon_foreground"
+        android:icon="@drawable/outline_boy_24"
         />
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settingsActivity"
         android:title="@string/settings"
         android:icon="@drawable/outline_settings_24"
         />

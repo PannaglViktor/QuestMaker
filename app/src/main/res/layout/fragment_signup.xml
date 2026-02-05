@@ -116,56 +116,5 @@
             android:textColor="@color/m_background"
             android:layout_gravity="center_horizontal"/>
 
-        <!-- GOOGLE SIGNUP-->
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_gravity="center">
-
-            <View
-                android:layout_width="100dp"
-                android:layout_height="1dp"
-                android:layout_centerInParent="true"
-                android:layout_marginEnd="@dimen/margin"
-                android:layout_toStartOf="@id/text_or"
-                android:background="#555" />
-
-            <TextView
-                android:id="@+id/text_or"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/or"
-                android:textSize="18sp"/>
-
-            <View
-                android:layout_width="100dp"
-                android:layout_height="1dp"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_toEndOf="@id/text_or"
-                android:background="#555" />
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/google_signup_button"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="@dimen/margin"
-            android:layout_marginEnd="50dp"
-            android:text="@string/login_with_google"
-            app:icon="@drawable/icon_google"
-            app:iconGravity="textStart"
-            app:iconTint="@null"
-            android:backgroundTint="@color/d_palette"
-            android:textColor="@color/l_palette"
-            android:textSize="16sp"
-            />
-
     </LinearLayout>
 </LinearLayout>

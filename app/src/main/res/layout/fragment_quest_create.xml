@@ -5,263 +5,158 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/l_background"
-    android:id="@+id/makeQuestFragment"
     tools:context=".ui.home.fragments.QuestCreateFragment">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/text_view_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/app_name"
+        android:textColor="@color/d_text"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Menu Icon -->
+    <ImageView
+        android:id="@+id/image_view_menu"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="24dp"
+        android:src="@drawable/quest_icon"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_view_header"
+        app:tint="@color/d_text"
+        android:contentDescription="@string/menu_icon" />
+
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="100dp"
         android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/text_view_header">
 
-        <LinearLayout
-            android:id="@+id/quest_container"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/l_palette"
-            android:orientation="vertical"
-            android:padding="20dp">
-            <!-- QUEST NAME -->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_quest_name"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:hint="@string/quest_name"
-                android:paddingStart="8dp"
-                android:backgroundTint="@color/l_text"
-                android:background="@drawable/rounded_rectangle"
-                android:inputType="textCapWords" />
-            <!-- QUEST DESCRIPTION -->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_quest_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="top"
-                android:hint="@string/quest_description"
-                android:padding="6dp"
-                android:backgroundTint="@color/l_text"
-                android:background="@drawable/rounded_rectangle"
-                android:inputType="textMultiLine"
-                android:minLines="3" />
-            <!-- IMAGES -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_upload_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/d_palette"
-                android:text="Upload Images" />
+            android:paddingHorizontal="16dp">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_images"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" 
-                android:layout_marginTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_image_slider"
-                tools:visibility="visible"
-                android:visibility="gone"/>
-            <!-- PPQ -->
+            <!-- Container -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/quest_container"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/l_background"
-                android:background="@drawable/rounded_rectangle"
-                >
+                android:background="@color/l_palette"
+                android:orientation="vertical"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!--  Name -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_quest_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/quest_name"
+                    android:inputType="textCapWords" />
+
+                <!--  Description -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_quest_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="top"
+                    android:hint="@string/quest_description"
+                    android:inputType="textMultiLine"
+                    android:minLines="3" />
+
+                <!-- ppq -->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_ppq"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginTop="16dp"
                     android:hint="@string/points_per_quest"
                     android:inputType="number" />
-                <TextView
+
+
+                <!-- Map  -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/map_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="20dp"
+                    app:cardCornerRadius="12dp">
+
+                    <ImageView
+                        android:id="@+id/map_placeholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/map_placeholder"
+                        android:contentDescription="@string/map_preview"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- Locations -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/d_palette"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:text="Starting Point"
+                        android:textColor="@color/l_text"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
+                    <TextView
+                        android:layout_marginTop="8dp"
+                        android:text="End Point"
+                        android:textColor="@color/l_text"
+                        android:textSize="16sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <!-- Save Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_save_publish"
+                    style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:text="@string/ppq"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    />
+                    android:layout_gravity="end"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/save"
+                    android:backgroundTint="@color/l_text"
+                    android:textColor="@color/d_text"
+                    app:cornerRadius="18dp" />
+
             </LinearLayout>
 
-            <!-- MAP OPTIONS-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/rounded_rectangle"
-                android:backgroundTint="@color/l_text"
-                android:layout_marginTop="16dp"
-                >
-            <TextView
-                android:id="@+id/map_options_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin"
-                android:text="Map Options"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/map_options_radiogroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_rectangle"
-                android:backgroundTint="@color/l_background"
-                >
-
-                <RadioButton
-                    android:id="@+id/radio_no_map"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="No Map"
-                    android:checked="true"
-                    android:buttonTint="@color/radio_button_tint"/>
-
-                <RadioButton
-                    android:id="@+id/radio_single_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Single Location"
-                    android:buttonTint="@color/radio_button_tint"/>
-
-                <RadioButton
-                    android:id="@+id/radio_start_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Start and End Points"
-                    android:buttonTint="@color/radio_button_tint"/>
-            </RadioGroup>
-            <!-- MAP -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/map_card"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="20dp"
-                app:cardCornerRadius="12dp"
-                android:visibility="gone">
-
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/map_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </androidx.cardview.widget.CardView>
-                <!-- MAP CHOICES -->
-            <LinearLayout
-                android:id="@+id/location_fields_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_rectangle"
-                android:backgroundTint="@color/d_palette"
-                android:padding="12dp"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/startingPoint"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/l_text"
-                        android:textSize="16sp"
-                        android:hint="@string/starting_point"
-                        android:textColorHint="@color/l_palette"
-                        android:inputType="textCapWords"
-                        android:visibility="gone"/>
-
-                    <Button
-                        android:id="@+id/search_start_point"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/endPoint"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/l_text"
-                        android:textSize="16sp"
-                        android:hint="@string/ending_point"
-                        android:textColorHint="@color/l_palette"
-                        android:inputType="textCapWords"
-                        android:visibility="gone"/>
-
-                    <Button
-                        android:id="@+id/search_end_point"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search"
-                        android:visibility="gone"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/singleLocation"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/l_text"
-                        android:textSize="16sp"
-                        android:hint="@string/location"
-                        android:textColorHint="@color/l_palette"
-                        android:inputType="textCapWords"
-                        android:visibility="gone"/>
-
-                    <Button
-                        android:id="@+id/search_single_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/search"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_save_quest"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:text="@string/save"
-                android:backgroundTint="@color/d_palette"
-                android:textColor="@color/l_text"
-                app:cornerRadius="18dp" />
-
-        </LinearLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

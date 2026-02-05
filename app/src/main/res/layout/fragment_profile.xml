@@ -8,18 +8,20 @@
     android:background="@color/l_background">
 
     <!-- TOP CIRCLE -->
+
     <View
         android:id="@+id/circle"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:background="@drawable/light_green_rounded_background"
-        app:layout_constraintTop_toTopOf="@+id/profileImage"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
+        app:layout_constraintbottom_tobottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
         />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:background="@color/d_palette"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -27,7 +29,7 @@
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:background="@color/d_palette"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -47,75 +49,9 @@
         />
 
 
-    <!-- FOLLOWING  -->
-    <LinearLayout
-        android:id="@+id/followingLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/rounded_rectangle"
-        app:layout_constraintStart_toStartOf="@+id/centerMenu"
-        app:layout_constraintBottom_toTopOf="@+id/centerMenu"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:id="@+id/followingCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_0"
-            tools:text="12"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/following"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-    </LinearLayout>
-
-    <!-- FOLLOWERS  -->
-    <LinearLayout
-        android:id="@+id/followersLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/rounded_rectangle"
-        app:layout_constraintEnd_toEndOf="@+id/centerMenu"
-        app:layout_constraintBottom_toTopOf="@+id/centerMenu"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:id="@+id/followersCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_0"
-            tools:text="400"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/followers"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-    </LinearLayout>
 
     <!-- CENTER MENU -->
     <LinearLayout
-        android:id="@+id/centerMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_rectangle"
@@ -124,7 +60,7 @@
         android:padding="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/circle"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -142,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="@string/score"
+            android:text="@string/user_score"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -168,7 +104,7 @@
         android:textColor="@color/l_palette"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,136 +4,81 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.uni_project.questmaster.R;
 import com.uni_project.questmaster.model.Quest;
-import com.uni_project.questmaster.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-public class QuestAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final int VIEW_TYPE_QUEST = 0;
-    private static final int VIEW_TYPE_USER = 1;
+public class QuestAdapter extends RecyclerView.Adapter<QuestAdapter.QuestViewHolder> {
 
     private final Context context;
-    private List<Object> items = new ArrayList<>();
-    private OnQuestClickListener onQuestClickListener;
-    private OnUserClickListener onUserClickListener;
+    private final List<Quest> questList;
+    private final String currentUserId;
 
-    public interface OnQuestClickListener {
-        void onQuestClick(Quest quest);
-    }
-
-    public interface OnUserClickListener {
-        void onUserClick(User user);
-    }
-
-    public QuestAdapter(Context context) {
+    public QuestAdapter(Context context, List<Quest> questList) {
         this.context = context;
-    }
-
-    public void setOnQuestClickListener(OnQuestClickListener listener) {
-        this.onQuestClickListener = listener;
-    }
-
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.onUserClickListener = listener;
-    }
-
-    public void setData(List<Quest> quests, List<User> users) {
-        items.clear();
-        if (quests != null) {
-            items.addAll(quests);
-        }
-        if (users != null) {
-            items.addAll(users);
-        }
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (items.get(position) instanceof Quest) {
-            return VIEW_TYPE_QUEST;
-        } else {
-            return VIEW_TYPE_USER;
-        }
+        this.questList = questList;
+        this.currentUserId = FirebaseAuth.getInstance().getCurrentUser() != null ? FirebaseAuth.getInstance().getCurrentUser().getUid() : null;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_QUEST) {
-            View view = LayoutInflater.from(context).inflate(R.layout.card_quest, parent, false);
-            return new QuestViewHolder(view);
-        } else {
-            View view = LayoutInflater.from(context).inflate(R.layout.card_user, parent, false);
-            return new UserViewHolder(view);
-        }
+    public QuestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.card_quest, parent, false);
+        return new QuestViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == VIEW_TYPE_QUEST) {
-            Quest quest = (Quest) items.get(position);
-            ((QuestViewHolder) holder).bind(quest);
-            holder.itemView.setOnClickListener(v -> {
-                if (onQuestClickListener != null) {
-                    onQuestClickListener.onQuestClick(quest);
-                }
-            });
-        } else {
-            User user = (User) items.get(position);
-            ((UserViewHolder) holder).bind(user);
-            holder.itemView.setOnClickListener(v -> {
-                if (onUserClickListener != null) {
-                    onUserClickListener.onUserClick(user);
-                }
-            });
-        }
+    public void onBindViewHolder(@NonNull QuestViewHolder holder, int position) {
+        Quest quest = questList.get(position);
+        holder.bind(quest, currentUserId);
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return questList.size();
     }
 
     static class QuestViewHolder extends RecyclerView.ViewHolder {
-        TextView questNameTextView;
-        // Add other views from card_quest.xml
+        private final MaterialCardView cardView;
+        private final TextView usernameTextView;
+        private final TextView dateTextView;
+        private final TextView descriptionTextView;
 
-        QuestViewHolder(@NonNull View itemView) {
+        public QuestViewHolder(@NonNull View itemView) {
             super(itemView);
-            questNameTextView = itemView.findViewById(R.id.questNameTextView);
+            cardView = (MaterialCardView) itemView;
+            usernameTextView = itemView.findViewById(R.id.usernameTextView);
+            dateTextView = itemView.findViewById(R.id.dateTextView);
+            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
         }
 
-        void bind(Quest quest) {
-            questNameTextView.setText(quest.getTitle());
-            // Bind other quest data
-        }
-    }
+        public void bind(final Quest quest, final String currentUserId) {
+            usernameTextView.setText(quest.getOwnerName());
+            descriptionTextView.setText(quest.getDescription());
 
-    static class UserViewHolder extends RecyclerView.ViewHolder {
-        ImageView userProfileImageView;
-        TextView userNameTextView;
+            if (quest.getTimestamp() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+                dateTextView.setText(sdf.format(quest.getTimestamp()));
+            }
 
-        UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            userProfileImageView = itemView.findViewById(R.id.user_profile_image);
-            userNameTextView = itemView.findViewById(R.id.user_name);
-        }
+            if (currentUserId != null && quest.getSavedBy() != null) {
+                cardView.setChecked(quest.getSavedBy().contains(currentUserId));
+            } else {
+                cardView.setChecked(false);
+            }
 
-        void bind(User user) {
-            userNameTextView.setText(user.getName());
-            // Load user profile image with Glide
+            // TODO: Set up ViewPager2 for images
+            // TODO: Implement onCheckedChangeListener for the star icon to update Firestore
         }
     }
 }

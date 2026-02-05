@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
-    alias(libs.plugins.ksp)
 }
 
 android {
@@ -32,12 +30,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        dataBinding = true
-    }
 }
 
 dependencies {
@@ -51,23 +43,17 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
-    implementation(libs.webkit)
-    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.commons.validator)
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
-    ksp("com.github.bumptech.glide:ksp:4.16.0")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
-    implementation("com.google.firebase:firebase-appcheck-playintegrity")
-    implementation("com.firebaseui:firebase-ui-storage:8.0.2")
 
 }

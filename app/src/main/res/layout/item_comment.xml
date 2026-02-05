@@ -4,46 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="16dp">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_view_user_avatar"
+        android:id="@+id/image_view_comment_author_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-        tools:src="@mipmap/ic_user_icon" />
+        tools:src="@android:drawable/sym_def_app_icon" />
 
     <TextView
-        android:id="@+id/text_view_user_name"
-        android:layout_width="0dp"
+        android:id="@+id/text_view_comment_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/image_view_comment_author_avatar"
+        app:layout_constraintTop_toTopOf="@id/image_view_comment_author_avatar"
+        tools:text="Comment Author" />
+
+    <TextView
+        android:id="@+id/text_view_comment_timestamp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_view_user_avatar"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Username" />
+        android:textSize="12sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/text_view_comment_author_name"
+        app:layout_constraintStart_toEndOf="@id/text_view_comment_author_name"
+        tools:text="2 hours ago" />
 
     <TextView
-        android:id="@+id/text_view_comment"
+        android:id="@+id/text_view_comment_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/text_view_user_name"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_user_name"
-        tools:text="This is a comment." />
-
-    <TextView
-        android:id="@+id/text_view_timestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_comment"
-        tools:text="1 day ago" />
+        app:layout_constraintStart_toStartOf="@id/text_view_comment_author_name"
+        app:layout_constraintTop_toBottomOf="@id/text_view_comment_author_name"
+        tools:text="This is a fantastic quest! I really enjoyed the puzzles and the story was very engaging." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

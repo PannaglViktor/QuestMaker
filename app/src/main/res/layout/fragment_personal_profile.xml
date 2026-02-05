@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/l_background"
-    android:id="@+id/personalProfileFragment"
     tools:context=".ui.home.fragments.PersonalProfileFragment">
 
     <!-- TOP CIRCLE -->
@@ -15,13 +14,14 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:background="@drawable/light_green_rounded_background"
-        app:layout_constraintTop_toTopOf="@+id/profileImage"
-        app:layout_constraintBottom_toBottomOf="@id/profileImage"
+        app:layout_constraintbottom_toBottomOf="@+id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
         />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:background="@color/d_palette"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -29,7 +29,7 @@
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="100dp"
         android:background="@color/d_palette"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -48,90 +48,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-    <!-- LOGOUT BUTTON -->
-    <ImageView
-        android:id="@+id/logoutIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:contentDescription="@string/logout"
-        android:focusable="true"
-        android:padding="8dp"
-        android:src="@drawable/ic_logout"
-        app:layout_constraintBottom_toBottomOf="@id/headerBackground"
-        app:layout_constraintEnd_toEndOf="@id/headerBackground"
-        app:layout_constraintTop_toTopOf="@id/headerBackground"
-        app:tint="@android:color/white" />
-
-    <!-- FOLLOWING  -->
-    <LinearLayout
-        android:id="@+id/followingLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/rounded_rectangle"
-        app:layout_constraintStart_toStartOf="@id/centerMenu"
-        app:layout_constraintBottom_toTopOf="@id/centerMenu"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:id="@+id/followingCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_0"
-            tools:text="125"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/following"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-    </LinearLayout>
-
-    <!-- FOLLOWERS  -->
-    <LinearLayout
-        android:id="@+id/followersLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="@drawable/rounded_rectangle"
-        app:layout_constraintEnd_toEndOf="@id/centerMenu"
-        app:layout_constraintBottom_toTopOf="@id/centerMenu"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:id="@+id/followersCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/_0"
-            tools:text="1.2k"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/followers"
-            android:textColor="@color/black"
-            android:textSize="14sp"/>
-    </LinearLayout>
-
     <!-- CENTER MENU -->
     <LinearLayout
         android:id="@+id/centerMenu"
@@ -143,7 +59,7 @@
         android:padding="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@id/circle"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -154,17 +70,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/profileName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:autofillHints=""
-                android:background="@android:color/transparent"
-                android:hint="@string/username"
+                android:text="@string/username"
                 android:textColor="@color/black"
-                android:textSize="26sp"
-                android:enabled="false" />
+                android:textSize="26sp" />
 
             <ImageView
                 android:id="@+id/editNameIcon"
@@ -183,19 +96,10 @@
 
             <TextView
                 android:id="@+id/profileScore"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/score"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/profilePpq"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/ppq"
+                android:layout_weight="1"
+                android:text="@string/user_score"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -207,19 +111,16 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
                 android:id="@+id/profileDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:autofillHints=""
                 android:gravity="center"
-                android:background="@android:color/transparent"
-                android:hint="@string/user_description"
+                android:text="@string/user_description"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:enabled="false" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/editDescriptionIcon"
@@ -229,7 +130,7 @@
                 android:contentDescription="@string/edit_description" />
         </LinearLayout>
     </LinearLayout>
-    <!-- SAVED QUEST-->
+
     <Button
         android:id="@+id/savedQuestsButton"
         style="@style/Widget.Material3.Button.OutlinedButton"

@@ -2,50 +2,42 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_home"
-    app:startDestination="@id/feedFragment">
+    app:startDestination="@id/FeedFragment"
+    android:id="@+id/nav_graph_home">
 
-    <!-- FEED -->
     <fragment
-        android:id="@+id/feedFragment"
+        android:id="@+id/FeedFragment"
         android:name="com.uni_project.questmaster.ui.home.fragments.FeedFragment"
         android:label="FeedFragment"
         tools:layout="@layout/fragment_feed">
         <action
-            android:id="@+id/action_feedFragment_to_questViewFragment"
+            android:id="@+id/action_FeedFragment_to_questViewFragment"
             app:destination="@id/questViewFragment" />
-        <action
-            android:id="@+id/action_feedFragment_to_createQuestFragment"
-            app:destination="@id/createQuestFragment" />
-        <action
-            android:id="@+id/action_feedFragment_to_personalProfileFragment"
-            app:destination="@id/personalProfileFragment" />
-        <action
-            android:id="@+id/action_feedFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
-
-    <!-- CREATE QUEST -->
     <fragment
-        android:id="@+id/createQuestFragment"
-        android:name="com.uni_project.questmaster.ui.quest.CreateQuestFragment"
-        android:label="fragment_create_quest"
-        tools:layout="@layout/fragment_create_quest" >
+        android:id="@+id/questViewFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.QuestViewFragment"
+        android:label="QuestViewFragment"
+        tools:layout="@layout/fragment_quest_view">
         <action
-            android:id="@+id/action_createQuestFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
-            android:id="@+id/action_createQuestFragment_to_personalProfileFragment"
-            app:destination="@id/personalProfileFragment" />
-        <action
-            android:id="@+id/action_createQuestFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_createQuestFragment_to_locationSelectionFragment"
-            app:destination="@id/locationSelectionFragment" />
+            android:id="@+id/action_questViewFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
-
-    <!-- PERSONAL PROFILE -->
+    <fragment
+        android:id="@+id/questCreateFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.QuestCreateFragment"
+        android:label="fragment_quest_create"
+        tools:layout="@layout/fragment_quest_create" />
+    <activity
+        android:id="@+id/settingsActivity"
+        android:name="com.uni_project.questmaster.ui.home.SettingsActivity"
+        android:label="settings"
+        tools:layout="@layout/activity_settings" />
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.uni_project.questmaster.ui.home.HomeActivity"
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home"/>
     <fragment
         android:id="@+id/personalProfileFragment"
         android:name="com.uni_project.questmaster.ui.home.fragments.PersonalProfileFragment"
@@ -54,96 +46,16 @@
         <action
             android:id="@+id/action_personalProfileFragment_to_questSavedFragment"
             app:destination="@id/questSavedFragment" />
-        <action
-            android:id="@+id/action_personalProfileFragment_to_followListFragment"
-            app:destination="@id/followListFragment" />
-        <action
-            android:id="@+id/action_personalProfileFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
-            android:id="@+id/action_personalProfileFragment_to_createQuestFragment"
-            app:destination="@id/createQuestFragment" />
-        <action
-            android:id="@+id/action_personalProfileFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
     </fragment>
-
-    <!-- SETTINGS -->
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.uni_project.questmaster.ui.home.fragments.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_createQuestFragment"
-            app:destination="@id/createQuestFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_personalProfileFragment"
-            app:destination="@id/personalProfileFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_locationSelectionFragment"
-            app:destination="@id/locationSelectionFragment" />
-    </fragment>
-
-    <!-- QUEST VIEW -->
-    <fragment
-        android:id="@+id/questViewFragment"
-        android.name="com.uni_project.questmaster.ui.quest.QuestViewFragment"
-        android:label="QuestViewFragment"
-        tools:layout="@layout/fragment_quest_view">
-        <argument
-            android:name="questId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_questViewFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
-
-    <!-- PROFILE -->
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.uni_project.questmaster.ui.utils.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <argument
-            android:name="userId"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_profileFragment_to_followListFragment"
-            app:destination="@id/followListFragment" />
-    </fragment>
-
-    <!-- QUEST SAVED -->
     <fragment
         android:id="@+id/questSavedFragment"
-        android:name="com.uni_project.questmaster.ui.quest.QuestSavedFragment"
+        android:name="com.uni_project.questmaster.ui.quest.saved.QuestSavedFragment"
         android:label="fragment_quest_saved"
-        tools:layout="@layout/fragment_quest_saved" >
-        <action
-            android:id="@+id/action_questSavedFragment_to_questViewFragment"
-            app:destination="@id/questViewFragment" />
-    </fragment>
-
-    <!-- FOLLOW -->
+        tools:layout="@layout/fragment_quest_saved" />
     <fragment
-        android:id="@+id/followListFragment"
-        android:name="com.uni_project.questmaster.ui.utils.FollowListFragment"
-        android:label="fragment_follow_list"
-        tools:layout="@layout/fragment_follow_list" >
-        <action
-            android:id="@+id/action_followListFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
-
-    <!-- LOCATION SELECTION -->
-    <fragment
-        android:id="@+id/locationSelectionFragment"
-        android:name="com.uni_project.questmaster.ui.utils.LocationSelectionFragment"
-        android:label="fragment_location_selection"
-        tools:layout="@layout/fragment_location_selection" />
+        android:id="@+id/profileFragment"
+        android:name="com.uni_project.questmaster.ui.home.fragments.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile"/>
 
 </navigation>
